@@ -1,0 +1,87 @@
+FNKd
+
+types: [
+	{
+		id: "boolean"
+	{
+		id: "string",
+		conversions: [
+			{
+				type: "number", 
+				operation: function(value) {
+					return value.toString(10);
+				}
+			},
+			{
+				type: "boolean", 
+				operation: function(value) {
+					return value ? "TRUE" : "FALSE";
+				}
+			}
+		]
+	},
+	{
+		id: "number"
+	},
+	{
+		id: "canvas"
+	},
+	{
+		id: "json"
+	},
+	{
+		id: "XML"
+	}
+]
+
+
+nodes: [
+	{
+		id: "add",
+		display: "+",
+		input: [
+			{
+				id: "0",
+				type: "string",
+				default: [""],
+				allowArray: true,
+				description: "Input"
+			},
+			{
+				id: "1",
+				type: "string",
+				default: [""],
+				allowArray: true,
+				description: "Input"
+			}
+		],
+		output: [
+			{
+				id: "0",
+				/* type: "string", */
+				/* default: [""], */
+				allowArray: true,
+				allowMultipleOutput: true,
+				description: "Concanetanated string"
+			}
+		],
+		operation: function(inputConnectors, outputConnectors) {
+		
+			var numOperations = Math.max(inputConnectors.getConnectorAt(0).numValues, inputConnectors.getConnectorAt(1).numValues);
+			
+			var totals = [];
+			
+			for (var i = 0; i < numOperations; i++) {
+				totals.push(inputConnectors.getConnectorAt(0).getValueAt(i) + inputConnectors.getConnectorAt(1).getValueAt(i));
+			}
+
+			outputConnectors.getConnectorAt(0).setValue(totals, "string");
+		},
+		operation: function(inputConnectors, outputConnectors) {
+		
+			override protected function processedValues(__value1:*, __value2:*): Number {
+				return Number(__value1) < Number(__value2) ? 1 : 0;
+			}
+		}
+	}
+]
