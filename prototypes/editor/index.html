@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
@@ -16,35 +16,171 @@
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="js/libs/modernizr-2.0.6.min.js"></script>
+	<script type="text/javascript">
+	
+		var draggingElement;
+		var draggingOffsetX;
+		var draggingOffsetY;
+		var testCanvas;
+		
+		// Dragging not working on Opera 11.51
+
+		function startElementDrag(e) {
+			draggingElement = e.target;
+			document.onmousemove = continueElementDrag;
+			document.onmouseup = stopElementDrag;
+			
+			// layerX and layerY are deprecated, calculate correctly
+			draggingOffsetX = e.layerX;
+			draggingOffsetY = e.layerY;
+			updatePosition(e.clientX, e.clientY);
+		}
+		function continueElementDrag(e) {
+			updatePosition(e.clientX, e.clientY);
+		}
+		function stopElementDrag(e) {
+			updatePosition(e.clientX, e.clientY);
+
+			draggingElement = undefined;
+			document.onmousemove = undefined;
+			document.onmouseup = undefined;
+		}
+		function updatePosition(x, y) {
+			draggingElement.style.left = x - draggingOffsetX + "px";
+			draggingElement.style.top = y - draggingOffsetY + "px";
+			
+			// document.body.scrollLeft
+			
+			updateCanvas();
+		}
+		
+		function updateCanvas() {
+			// Destroy canvas
+			if (testCanvas == undefined) {
+				// Create new canvas
+				testCanvas = document.createElement("canvas");
+				testCanvas.setAttribute("width", 100);
+				testCanvas.setAttribute("height", 100);
+				testCanvas.setAttribute("id", "canvas");
+				testCanvas.style.position = "absolute";
+				testCanvas.style.zIndex = -100;
+				document.body.appendChild(testCanvas);
+				if (typeof G_vmlCanvasManager != 'undefined') {
+					testCanvas = G_vmlCanvasManager.initElement(testCanvas);
+				}
+			}
+			
+			var node1 = document.getElementById("node1");
+			var node2 = document.getElementById("node2");
+
+			var x1 = node1.offsetLeft + 4;
+			var y1 = node1.offsetTop + node1.clientHeight + 8;
+
+			var x2 = node2.offsetLeft + 4;
+			var y2 = node2.offsetTop + 4;
+			
+			var stroke = 2;
+			
+			var cx = Math.min(x1, x2);
+			var cy = Math.min(y1, y2);
+			var cw = Math.abs(x2 - x1) + stroke;
+			var ch = Math.abs(y2 - y1) + stroke;
+
+			// Move
+			testCanvas.style.left = cx + "px";
+			testCanvas.style.top = cy + "px";
+			testCanvas.width = cw;
+			if (testCanvas.height != ch) testCanvas.height = ch;
+			
+			// Paint
+			var context = testCanvas.getContext("2d");
+			
+			var sx = x1 - cx;
+			var sy = y1 - cy;
+			var ex = x2 - cx;
+			var ey = y2 - cy;
+			
+			var dx = ex - sx;
+			var dy = ey - sy;
+			
+			context.strokeStyle = "#333333";
+			context.lineJoin = "round";
+			context.lineWidth = stroke;
+			
+			context.moveTo(sx, sy);
+			//context.lineTo(ex, ey);
+			context.bezierCurveTo(sx, sy + dy * 0.25, sx + dx * 0.25, sy + dy * 0.4, sx + dx * 0.5, sy + dy * 0.5);
+			context.bezierCurveTo(sx + dx * 0.75, sy + dy * 0.6, ex, sy + dy * 0.75, ex, ey);
+			context.stroke();
+
+		}
+		
+		function onLoaded() {
+			var element;
+
+			element = document.getElementsByClassName("fnk_node")[0];
+			element.style.top = "10px";
+			element.style.left = "10px";
+
+			element = document.getElementsByClassName("fnk_node")[1];
+			element.style.top = "100px";
+			element.style.left = "100px";
+			
+			updateCanvas();
+		}
+	</script>
+	
 	<style type='text/css'>
 		.fnk_node {
 			border: 1px solid #000000;
 			display: block;
 			position: absolute;
 			width: 100px;
-			height: 80px;
-			top: 100px;
-			left: 100px;
-			cursor: pointer;
+			height: 40px;
+			//height: 80px;
+			//top: 100px;
+			//left: 100px;
+			cursor: move; /* nwse-resize */
+			
+			border-width: 8px 8px 8px 8px;
+
+			/* Border skin */
+			/* Doesn't work on MSIE 9 */
+			-ms-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
+			-khtml-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
+			-o-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
+			-moz-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
+			-webkit-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
+			border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
 
 			/* Unselectable */
-			user-select: none;
-			-webkit-user-select: none;
+			/* Doesn't work on MSIE 9, Opera 11.6 */
+			-ms-user-select: none;
+			-khtml-user-select: none;	/* Safari? */
 			-o-user-select: none;
 			-moz-user-select: -moz-none;
-			-khtml-user-select: none;	/* Safari? */
+			-webkit-user-select: none;
+			user-select: none;
+			
+			/*
+			-o-transform: translateZ(0);
+			-ms-transform: translateZ(0);
+			-moz-transform: translateZ(0);
+			-webkit-transform: translateZ(0);
+			transform: translateZ(0);
+			*/
 		}
 	</style>
 </head>
-<body>
+<body onload="onLoaded();">
 
 <div id="container">
 	<header>
 
 	</header>
 	<div id="main" role="main">
-
-		<div class="fnk_node">+ (Number)</div>
+		<div class="fnk_node" id="node1" onmousedown="startElementDrag(event)">+ (Number)</div>
+		<div class="fnk_node" id="node2" onmousedown="startElementDrag(event)">+ (Number)</div>
 	</div>
 	<footer>
 
