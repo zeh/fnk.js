@@ -1,0 +1,1 @@
+Raphaël - FF 3+, Safari 3+, Chrome 5+, Opera 9.5+, IE 6+

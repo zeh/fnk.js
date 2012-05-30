@@ -16,12 +16,13 @@
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="js/libs/modernizr-2.0.6.min.js"></script>
+	<script src="js/libs/raphael-min.js"></script>
 	<script type="text/javascript">
 	
 		var draggingElement;
 		var draggingOffsetX;
 		var draggingOffsetY;
-		var testCanvas;
+		var testLineCanvas;
 		
 		// Dragging not working on Opera 11.51
 
@@ -51,23 +52,14 @@
 			
 			// document.body.scrollLeft
 			
-			updateCanvas();
+			updateLines();
 		}
 		
-		function updateCanvas() {
+		function updateLines() {
 			// Destroy canvas
-			if (testCanvas == undefined) {
-				// Create new canvas
-				testCanvas = document.createElement("canvas");
-				testCanvas.setAttribute("width", 100);
-				testCanvas.setAttribute("height", 100);
-				testCanvas.setAttribute("id", "canvas");
-				testCanvas.style.position = "absolute";
-				testCanvas.style.zIndex = -100;
-				document.body.appendChild(testCanvas);
-				if (typeof G_vmlCanvasManager != 'undefined') {
-					testCanvas = G_vmlCanvasManager.initElement(testCanvas);
-				}
+			if (testLineCanvas == undefined) {
+				// Create new line canvas
+				testLineCanvas = Raphael(0, 0, 100, 100);
 			}
 			
 			var node1 = document.getElementById("node1");
@@ -87,14 +79,9 @@
 			var ch = Math.abs(y2 - y1) + stroke;
 
 			// Move
-			testCanvas.style.left = cx + "px";
-			testCanvas.style.top = cy + "px";
-			testCanvas.width = cw;
-			if (testCanvas.height != ch) testCanvas.height = ch;
+			//testLineCanvas.setViewBox(0, 0, cw, ch);
 			
 			// Paint
-			var context = testCanvas.getContext("2d");
-			
 			var sx = x1 - cx;
 			var sy = y1 - cy;
 			var ex = x2 - cx;
@@ -103,15 +90,28 @@
 			var dx = ex - sx;
 			var dy = ey - sy;
 			
-			context.strokeStyle = "#333333";
-			context.lineJoin = "round";
-			context.lineWidth = stroke;
+			var commands = "";
+			commands += "M"+sx+","+sy; // move
+			commands += "L"+ex+","+ey;
+
+			testLineCanvas.clear();
+
 			
-			context.moveTo(sx, sy);
-			//context.lineTo(ex, ey);
-			context.bezierCurveTo(sx, sy + dy * 0.25, sx + dx * 0.25, sy + dy * 0.4, sx + dx * 0.5, sy + dy * 0.5);
-			context.bezierCurveTo(sx + dx * 0.75, sy + dy * 0.6, ex, sy + dy * 0.75, ex, ey);
-			context.stroke();
+			testLineCanvas.canvas.style.top = cy+"px";
+			testLineCanvas.canvas.style.left = cx+"px";
+			testLineCanvas.canvas.style.width = cw+"px";
+			testLineCanvas.canvas.style.height = ch+"px";
+			
+			testLineCanvas.path(commands);
+			
+			//context.strokeStyle = "#333333";
+			//context.lineJoin = "round";
+			//context.lineWidth = stroke;
+			
+			//context.moveTo(sx, sy);
+			//context.bezierCurveTo(sx, sy + dy * 0.25, sx + dx * 0.25, sy + dy * 0.4, sx + dx * 0.5, sy + dy * 0.5);
+			//context.bezierCurveTo(sx + dx * 0.75, sy + dy * 0.6, ex, sy + dy * 0.75, ex, ey);
+			//context.stroke();
 
 		}
 		
@@ -126,7 +126,7 @@
 			element.style.top = "100px";
 			element.style.left = "100px";
 			
-			updateCanvas();
+			updateLines();
 		}
 	</script>
 	
