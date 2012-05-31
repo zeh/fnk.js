@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="css/style.css">
 
 	<script src="js/libs/modernizr-2.0.6.min.js"></script>
-	<script src="js/libs/raphael-min.js"></script>
+	<script src="js/libs/fnk_simplesvg.js"></script>
 	<script type="text/javascript">
 	
 		var draggingElement;
@@ -31,16 +31,15 @@
 			document.onmousemove = continueElementDrag;
 			document.onmouseup = stopElementDrag;
 			
-			// layerX and layerY are deprecated, calculate correctly
-			draggingOffsetX = e.layerX;
-			draggingOffsetY = e.layerY;
-			updatePosition(e.clientX, e.clientY);
+			draggingOffsetX = e.pageX - e.target.offsetLeft;
+			draggingOffsetY = e.pageY - e.target.offsetTop;
+			updatePosition(e.pageX, e.pageY);
 		}
 		function continueElementDrag(e) {
-			updatePosition(e.clientX, e.clientY);
+			updatePosition(e.pageX, e.pageY);
 		}
 		function stopElementDrag(e) {
-			updatePosition(e.clientX, e.clientY);
+			updatePosition(e.pageX, e.pageY);
 
 			draggingElement = undefined;
 			document.onmousemove = undefined;
@@ -55,11 +54,35 @@
 			updateLines();
 		}
 		
+		function startElementDragTouch(e) {
+			draggingElement = e.target;
+			document.ontouchmove = continueElementDragTouch;
+			document.ontouchend = stopElementDragTouch;
+			
+			e.preventDefault();
+			
+			draggingOffsetX = e.touches[0].pageX - e.target.offsetLeft;
+			draggingOffsetY = e.touches[0].pageY - e.target.offsetTop;
+			updatePosition(e.touches[0].pageX, e.touches[0].pageY);
+		}
+		function continueElementDragTouch(e) {
+			updatePosition(e.touches[0].pageX, e.touches[0].pageY);
+			e.preventDefault();
+		}
+		function stopElementDragTouch(e) {
+			draggingElement = undefined;
+			document.ontouchmove = undefined;
+			document.ontouchend = undefined;
+			
+			e.preventDefault();
+		}
+		
 		function updateLines() {
 			// Destroy canvas
 			if (testLineCanvas == undefined) {
 				// Create new line canvas
-				testLineCanvas = Raphael(0, 0, 100, 100);
+				testLineCanvas = new SimpleSVG(600, 400);
+				document.body.appendChild(testLineCanvas.element);
 			}
 			
 			var node1 = document.getElementById("node1");
@@ -90,19 +113,25 @@
 			var dx = ex - sx;
 			var dy = ey - sy;
 			
-			var commands = "";
-			commands += "M"+sx+","+sy; // move
-			commands += "L"+ex+","+ey;
+			testLineCanvas.setPosition(cx, cy);
+			testLineCanvas.setDimensions(cw, ch);
 
 			testLineCanvas.clear();
+			
 
+			//testLineCanvas.element.style.width = cw+"px";
+			//testLineCanvas.element.style.height = ch+"px";
 			
-			testLineCanvas.canvas.style.top = cy+"px";
-			testLineCanvas.canvas.style.left = cx+"px";
-			testLineCanvas.canvas.style.width = cw+"px";
-			testLineCanvas.canvas.style.height = ch+"px";
+			//testLineCanvas.line(sx, sy, ex, ey);
+			testLineCanvas.path([
+				{command:"M", parameters:[[sx, sy]]}
+				,
+				{command:"Q", parameters:[[sx, sy + dy*0.25], [sx + dx*0.5, sy+dy*0.5]]}
+				,
+				{command:"Q", parameters:[[ex, sy + dy*0.75], [ex, ey]]}
+			]);
 			
-			testLineCanvas.path(commands);
+			testLineCanvas.element.set
 			
 			//context.strokeStyle = "#333333";
 			//context.lineJoin = "round";
@@ -179,8 +208,8 @@
 
 	</header>
 	<div id="main" role="main">
-		<div class="fnk_node" id="node1" onmousedown="startElementDrag(event)">+ (Number)</div>
-		<div class="fnk_node" id="node2" onmousedown="startElementDrag(event)">+ (Number)</div>
+		<div class="fnk_node" id="node1" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
+		<div class="fnk_node" id="node2" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
 	</div>
 	<footer>
 
