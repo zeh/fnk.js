@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<script src="../../src/Fnk.js"></script>
+	<script src="../../src/core/data/DataType.js"></script>
+	<script src="../../src/core/connectors/Connector.js"></script>
+	<script src="../../src/core/connectors/ConnectorList.js"></script>
+	<script src="../../src/core/nodes/Node.js"></script>
+	<script src="../../src/core/nodes/IONode.js"></script>
+	<script src="../../src/core/nodes/number/IONodeNumber.js"></script>
+
+	<script type="text/javascript">
+	
+		function onLoaded() {
+			// Tentative low-level API for the code version of the language
+			
+			console.log(">>>> Starting patch processing.");
+
+			//var patch = new FNK.Patch();
+
+			// Main nodes
+			var nodea = new FNK.IONodeNumber();
+			nodea.getInputConnectorAt(0).setValue([1], FNK.DataType.NUMBER);
+			//patch.addNode(nodea);
+
+			var nodeb = new FNK.IONodeNumber();
+			nodeb.getInputConnectorAt(0).setValue([2], FNK.DataType.NUMBER);
+			//patch.addNode(nodeb);
+
+			// Operation
+			//var pnode = new Node("Add");
+			//patch.addNode(pnode);
+
+			// Result
+			//var resultnode = new Node("InputNumber");
+			//patch.addNode(resultnode);
+
+			// Links: before operation
+
+			//var linka = new Link();
+			//nodea.getOutputConnector("output").addLink(linka);
+			//pnode.getInputConnector("input-0").addLink(linka);
+			//patch.addLink(linka);
+
+			//var linkb = new Link();
+			//nodeb.getOutputConnector("output").addLink(linkb);
+			//pnode.getInputConnector("input-1").addLink(linkb);
+			//patch.addLink(linkb);
+
+			// Links: after operation
+
+			//var linkresult = new Link();
+			//pnode.getOutputConnector("output").addLink(linkresult);
+			//resultnode.getInputConnector("input").addLink(linkresult);
+			//patch.addLink(linkresult);
+
+			//patch.execute();
+
+			// Nodes must all be inside the correct patch!
+			
+			console.log(">>>> All done.");
+			
+			nodea.process();
+			nodeb.process();
+			
+			console.log("==== Node a: " + nodea + " = " + nodea.getOutputConnectorAt(0).getValue());
+			console.log("==== Node b: " + nodeb + " = " + nodeb.getOutputConnectorAt(0).getValue());
+		}
+		
+	</script>
+	
+</head>
+<body onload="onLoaded();">
+</body>
+</html>
