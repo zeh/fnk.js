@@ -3,6 +3,7 @@ FNKd
 types: [
 	{
 		id: "boolean"
+	},
 	{
 		id: "string",
 		conversions: [

@@ -64,7 +64,7 @@ SimpleSVG.prototype.path = function(__commands) {
 	}
 	
 	shape.setAttributeNS(null, "d", commands);
-	shape.setAttributeNS(null, "stroke-width", "4");
+	shape.setAttributeNS(null, "stroke-width", "1");
 	shape.setAttributeNS(null, "stroke", "#000000");
 	shape.setAttributeNS(null, "fill", "none");
 	

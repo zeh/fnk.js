@@ -31,15 +31,21 @@
 			document.onmousemove = continueElementDrag;
 			document.onmouseup = stopElementDrag;
 			
+			e.preventDefault();
+			
 			draggingOffsetX = e.pageX - e.target.offsetLeft;
 			draggingOffsetY = e.pageY - e.target.offsetTop;
 			updatePosition(e.pageX, e.pageY);
 		}
 		function continueElementDrag(e) {
 			updatePosition(e.pageX, e.pageY);
+			
+			e.preventDefault();
 		}
 		function stopElementDrag(e) {
 			updatePosition(e.pageX, e.pageY);
+			
+			e.preventDefault();
 
 			draggingElement = undefined;
 			document.onmousemove = undefined;
@@ -89,10 +95,10 @@
 			var node2 = document.getElementById("node2");
 
 			var x1 = node1.offsetLeft + 4;
-			var y1 = node1.offsetTop + node1.clientHeight + 8;
+			var y1 = node1.offsetTop + node1.clientTop + node1.clientHeight;
 
 			var x2 = node2.offsetLeft + 4;
-			var y2 = node2.offsetTop + 4;
+			var y2 = node2.offsetTop + node2.clientTop;
 			
 			var stroke = 2;
 			
@@ -160,7 +166,32 @@
 	</script>
 	
 	<style type='text/css'>
+		body {
+			background: #f2f2f2;
+		}
 		.fnk_node {
+			border: 2px solid #a4a4a4;
+			display: block;
+			position: absolute;
+			border-radius: 4px;
+			width: 100px;
+			height: 40px;
+			background: #ffffff;
+
+			cursor: move; /* nwse-resize */
+			
+			box-shadow: 0 0 5px #d0d0d0;
+
+			/* Unselectable */
+			/* Doesn't work on MSIE 9, Opera 11.6 */
+			-ms-user-select: none; /* Starting in MSIE 10 */
+			-khtml-user-select: none;
+			-moz-user-select: -moz-none;
+			-webkit-user-select: none;
+			user-select: none;
+		}
+
+		.fnk_nodeold {
 			border: 1px solid #000000;
 			display: block;
 			position: absolute;
