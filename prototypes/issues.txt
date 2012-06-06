@@ -1,0 +1,4 @@
+Editor:
+
+Android 2.3: does not support SVG, and box shadow.
+IE 9: doesn't allow the div content to be unselectable.
