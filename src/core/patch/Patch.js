@@ -75,6 +75,7 @@ FNK.Patch.prototype.process = function() {
 			if (this.links[j].outputNode == tNode && this.nodes.indexOf(this.links[j].inputNode) > i) {
 				if (this.links[j].delayed) {
 					if (this.links[j].needsOutputting) {
+						FNK.log("Processing delayed link");
 						this.links[j].doOutput();
 					}
 				} else {

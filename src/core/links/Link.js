@@ -10,7 +10,6 @@ FNK.Link = function() {
 
 	this.delayed = false;				// Boolean
 
-	this.previousValue = undefined;		// Array
 	this.needsOutputting = false;		// Boolean
 };
 
@@ -23,12 +22,15 @@ FNK.Link.prototype.constructor = FNK.Link;
 
 FNK.Link.prototype.process = function() {
 	//FNK.log("Processing link: inputNode = " + this.inputNode + ":" + this.inputConnectorId + " --> " + this.outputNode + ":" + this.outputConnectorId);
-	if (!this.delayed) {
-		this.outputNode.getInputConnector(this.outputConnectorId).setValue(this.inputNode.getOutputConnector(this.inputConnectorId).getValue(), this.inputNode.getOutputConnector(this.inputConnectorId).dataType);
+
 		//this.outputNode.setInputValue(this.outputConnectorId, this.inputNode.getOutputValue(this.inputConnectorId), this.inputNode.getOutputType(this.inputConnectorId));
-		this.needsOutputting = false;
+
+	if (!this.delayed) {
+		this.doOutput();
 	} else {
-		if (this.needsOutputting) this.doOutput();
+		//FNK.warn("Is Delayed! Needs output = "+this.needsOutputting);
+		// This is not needed?? Because the patch does it itself...
+		//if (this.needsOutputting) this.doOutput();
 		// TODO: SPECIAL CASE for bitmaps - fix this?
 		/*
 		if (inputNode.getOutputType(this.inputConnectorId) == DataType.IMAGE) {
@@ -52,15 +54,20 @@ FNK.Link.prototype.process = function() {
 			previousValue = inputNode.getOutputValue(this.inputConnectorId);
 		}
 		*/
-		this.previousValue = this.inputNode.getOutputValue(this.inputConnectorId);
+		//this.previousValue = this.inputNode.getOutputValue(this.inputConnectorId);
 		this.needsOutputting = true;
 		// TODO: deep copy instead? 
 	}
 };
 
 FNK.Link.prototype.doOutput = function() {
+	//if (this.neeedsOutputting) FNK.warn("Doing output: "+this.previousValue+" as "+this.previousDataType);
+	// TODO: Fix this - no "previous" properties needed?
+	var vValue = this.inputNode.getOutputConnector(this.inputConnectorId).getValue();
+	var vDataType = this.inputNode.getOutputConnector(this.inputConnectorId).dataType;
+
 	this.needsOutputting = false;
-	this.outputNode.setInputValue(this.outputConnectorId, this.previousValue, this.inputNode.getOutputType(this.inputConnectorId));
+	this.outputNode.getInputConnector(this.outputConnectorId).setValue(vValue, vDataType);
 };
 
 FNK.Link.prototype.dispose = function() {
@@ -73,7 +80,6 @@ FNK.Link.prototype.dispose = function() {
 		}
 	}
 	*/
-	this.previousValue = null;
 	this.inputNode = null;
 	this.outputNode = null;
 };

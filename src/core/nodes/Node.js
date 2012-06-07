@@ -110,10 +110,9 @@ FNK.Node.prototype.dispose = function() {
 // PROCESSING interface -------------------------------------------------------------------------------------------
 
 FNK.Node.prototype.process = function() {
-	if (this.alwaysProcess || this.inputConnectors.hasChangedAny || this.needsProcess) {
+	if (this.alwaysProcess || this.inputConnectors.getHasChangedAny() || this.needsProcess) {
 		// Actual processing
 		this.innerProcess();
-		this.dispatchValueChanges();
 		this.resetChangeFlags();
 	}
 };
@@ -126,23 +125,6 @@ FNK.Node.prototype.resetChangeFlags = function() {
 	this.needsProcess = false;
 	this.inputConnectors.resetChangeFlag();
 	this.outputConnectors.resetChangeFlag();
-};
-
-FNK.Node.prototype.dispatchValueChanges = function() {
-	this.dispatchChange();
-
-	var i;
-	var cn;
-	for (i = 0; i < this.outputConnectors.numConnectors; i++) {
-		cn = this.outputConnectors.getConnectorAt(i); 
-		if (this.alwaysProcess || cn.hasChanged) {
-			//dispatchEvent(new NodeEvent(NodeEvent.OUTPUT_CONNECTOR_VALUE_CHANGE, this, cn.id));
-		}
-	}
-};
-
-FNK.Node.prototype.dispatchChange = function() {
-	//dispatchEvent(new NodeEvent(NodeEvent.VALUE_CHANGE, this));
 };
 
 

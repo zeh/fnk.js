@@ -21,7 +21,7 @@ FNK.Connector.prototype.constructor = FNK.Connector;
 
 FNK.Connector.prototype.resetChangeFlag = function() {
 	// Marks this connector's values as not changed
-	_hasChanged = false;
+	this.hasChanged = false;
 };
 
 FNK.Connector.prototype.setValue = function(__value, __fromType) {
