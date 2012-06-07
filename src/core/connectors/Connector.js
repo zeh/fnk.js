@@ -49,3 +49,7 @@ FNK.Connector.prototype.getValue = function() {
 FNK.Connector.prototype.getValueAt = function(__position) {
 	return this.value[__position % this.value.length];
 };
+
+FNK.Connector.prototype.getNumItems = function() {
+	return this.value.length;
+};

@@ -1,22 +1,18 @@
 // ================================================================================================================
 // CONSTRUCTOR ----------------------------------------------------------------------------------------------------
 
-FNK.IONodeNumber = function() {
-	FNK.log("IONodeNumber()");
-
+FNK.NumberIONode = function() {
 	FNK.IONode.call(this);
 };
 
-FNK.IONodeNumber.prototype = new FNK.IONode();
-FNK.IONodeNumber.prototype.constructor = FNK.IONodeNumber;
+FNK.NumberIONode.prototype = new FNK.IONode();
+FNK.NumberIONode.prototype.constructor = FNK.NumberIONode;
 
 
 // ================================================================================================================
 // INTERNAL interface ---------------------------------------------------------------------------------------------
 
-FNK.IONodeNumber.prototype.setInitialData = function() {
-	FNK.log("IONodeNumber :: setInitialData()");
-	
+FNK.NumberIONode.prototype.setInitialData = function() {
 	FNK.IONode.prototype.setInitialData.call(this);
 
 	this.dataType = FNK.DataType.NUMBER;

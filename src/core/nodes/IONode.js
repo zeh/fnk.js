@@ -2,8 +2,6 @@
 // CONSTRUCTOR ----------------------------------------------------------------------------------------------------
 
 FNK.IONode = function() {
-	FNK.log("IONode()");
-	
 	FNK.Node.call(this);
 };
 
@@ -15,8 +13,6 @@ FNK.IONode.prototype.constructor = FNK.IONode;
 // INTERNAL interface ---------------------------------------------------------------------------------------------
 
 FNK.IONode.prototype.setInitialData = function() {
-	FNK.log("IONode :: setInitialData()");
-	
 	FNK.Node.prototype.setInitialData.call(this);
 	
 	//renderingClass = VisibleListNode;
@@ -36,6 +32,8 @@ FNK.IONode.prototype.populateConnectors = function() {
 
 FNK.IONode.prototype.innerProcess = function() {
 	// Process the node, using the input and creating the output
+	// TODO: setting the rendering caption like this is wrong
+	this.renderingCaption = this.inputConnectors.getConnector(FNK.Node.CONNECTOR_ID_INPUT).getValue();
 	this.outputConnectors.getConnector(FNK.Node.CONNECTOR_ID_OUTPUT).setValue(this.inputConnectors.getConnector(FNK.Node.CONNECTOR_ID_INPUT).getValue(), this.dataType);
 };
 

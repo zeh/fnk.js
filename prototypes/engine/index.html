@@ -7,69 +7,82 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<script src="../../src/Fnk.js"></script>
-	<script src="../../src/core/data/DataType.js"></script>
-	<script src="../../src/core/connectors/Connector.js"></script>
-	<script src="../../src/core/connectors/ConnectorList.js"></script>
-	<script src="../../src/core/nodes/Node.js"></script>
-	<script src="../../src/core/nodes/IONode.js"></script>
-	<script src="../../src/core/nodes/number/IONodeNumber.js"></script>
+
+		<script src="../../src/core/data/DataType.js"></script>
+
+		<script src="../../src/core/connectors/Connector.js"></script>
+			<script src="../../src/core/connectors/ConnectorList.js"></script>
+
+		<script src="../../src/core/links/Link.js"></script>
+		<script src="../../src/core/nodes/Node.js"></script>
+
+			<script src="../../src/core/nodes/IONode.js"></script>
+				<script src="../../src/core/nodes/number/NumberIONode.js"></script>
+			<script src="../../src/core/nodes/MultipleInputNode.js"></script>
+				<script src="../../src/core/nodes/OperationNode.js"></script>
+					<script src="../../src/core/nodes/number/NumberAdd.js"></script>
+
+		<script src="../../src/core/patch/Patch.js"></script>
 
 	<script type="text/javascript">
 	
 		function onLoaded() {
 			// Tentative low-level API for the code version of the language
 			
-			console.log(">>>> Starting patch processing.");
+			console.log("===================>>>> Creating patch...");
 
-			//var patch = new FNK.Patch();
+			patch = new FNK.Patch();
 
 			// Main nodes
-			var nodea = new FNK.IONodeNumber();
+			var nodea = new FNK.NumberIONode();
 			nodea.getInputConnectorAt(0).setValue([1], FNK.DataType.NUMBER);
-			//patch.addNode(nodea);
+			patch.addNode(nodea);
 
-			var nodeb = new FNK.IONodeNumber();
+			var nodeb = new FNK.NumberIONode();
 			nodeb.getInputConnectorAt(0).setValue([2], FNK.DataType.NUMBER);
-			//patch.addNode(nodeb);
+			patch.addNode(nodeb);
 
 			// Operation
-			//var pnode = new Node("Add");
-			//patch.addNode(pnode);
+			var pnode = new FNK.NumberAdd();
+			patch.addNode(pnode);
 
 			// Result
-			//var resultnode = new Node("InputNumber");
-			//patch.addNode(resultnode);
+			var resultnode = new FNK.NumberIONode();
+			patch.addNode(resultnode);
 
 			// Links: before operation
+			var linka = new FNK.Link();
+			linka.setInputNode(nodea, nodea.getOutputConnectorIdAt(0));
+			linka.setOutputNode(pnode, pnode.getInputConnectorIdAt(0));
+			patch.addLink(linka);
 
-			//var linka = new Link();
-			//nodea.getOutputConnector("output").addLink(linka);
-			//pnode.getInputConnector("input-0").addLink(linka);
-			//patch.addLink(linka);
-
-			//var linkb = new Link();
-			//nodeb.getOutputConnector("output").addLink(linkb);
-			//pnode.getInputConnector("input-1").addLink(linkb);
-			//patch.addLink(linkb);
+			var linkb = new FNK.Link();
+			linkb.setInputNode(nodeb, nodeb.getOutputConnectorIdAt(0));
+			linkb.setOutputNode(pnode, pnode.getInputConnectorIdAt(1));
+			patch.addLink(linkb);
 
 			// Links: after operation
 
-			//var linkresult = new Link();
-			//pnode.getOutputConnector("output").addLink(linkresult);
-			//resultnode.getInputConnector("input").addLink(linkresult);
-			//patch.addLink(linkresult);
+			var linkresult = new FNK.Link();
+			linkresult.setInputNode(pnode, pnode.getOutputConnectorIdAt(0));
+			linkresult.setOutputNode(resultnode, resultnode.getInputConnectorIdAt(0));
+			patch.addLink(linkresult);
 
-			//patch.execute();
+			console.log("===================>>>> Processing patch...");
 
-			// Nodes must all be inside the correct patch!
+			patch.process();
 			
-			console.log(">>>> All done.");
-			
-			nodea.process();
-			nodeb.process();
+			//nodea.process();
+			//nodeb.process();
+			//pnode.process();
+			//resultnode.process();
+
+			console.log("===================>>>> All done.");
 			
 			console.log("==== Node a: " + nodea + " = " + nodea.getOutputConnectorAt(0).getValue());
 			console.log("==== Node b: " + nodeb + " = " + nodeb.getOutputConnectorAt(0).getValue());
+			console.log("==== Node add: " + pnode + " = " + pnode.getOutputConnectorAt(0).getValue());
+			console.log("==== Node result: " + resultnode + " = " + resultnode.getOutputConnectorAt(0).getValue());
 		}
 		
 	</script>

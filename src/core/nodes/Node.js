@@ -2,8 +2,6 @@
 // CONSTRUCTOR ----------------------------------------------------------------------------------------------------
 
 FNK.Node = function() {
-	FNK.log("Node()");
-
 	this.setInitialData();
 	this.createParameters();
 	this.populateParameters();
@@ -16,9 +14,9 @@ FNK.Node.prototype.constructor = FNK.Node;
 
 
 // ================================================================================================================
-// PROPERTIES -----------------------------------------------------------------------------------------------------
+// STATIC properties ----------------------------------------------------------------------------------------------
 
-// Static constants
+// Constants
 FNK.Node.CONNECTOR_ID_INPUT = "input";
 FNK.Node.CONNECTOR_ID_OUTPUT = "output";
 FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
@@ -29,8 +27,6 @@ FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
 // INTERNAL interface ---------------------------------------------------------------------------------------------
 
 FNK.Node.prototype.setInitialData = function() {
-	FNK.log("Node :: setInitialData()");
-
 	// Static properties for rendering purposes
 	//		public var renderingClass:Class;
 	this.renderingCaption = "null";				// What's displayed on the node								"+"
@@ -85,12 +81,28 @@ FNK.Node.prototype.getInputConnectorAt = function(__position) {
 	return this.inputConnectors.getConnectorAt(__position);
 };
 
+FNK.Node.prototype.getInputConnectorIdAt = function(__position) {
+	return this.inputConnectors.getConnectorIdAt(__position);
+};
+
 FNK.Node.prototype.getOutputConnector = function(__id) {
 	return this.outputConnectors.getConnector(__id);
 };
 
 FNK.Node.prototype.getOutputConnectorAt = function(__position) {
 	return this.outputConnectors.getConnectorAt(__position);
+};
+
+FNK.Node.prototype.getOutputConnectorIdAt = function(__position) {
+	return this.outputConnectors.getConnectorIdAt(__position);
+};
+
+FNK.Node.prototype.getNumInputConnectors = function() {
+	return this.inputConnectors.getNumConnectors();
+};
+
+FNK.Node.prototype.getNumOutputConnectors = function() {
+	return this.outputConnectors.getNumConnectors();
 };
 
 FNK.Node.prototypedispose = function() {
@@ -150,17 +162,7 @@ FNK.Node.prototype.toString = function() {
 	return "[" + this.renderingCaption + "]";
 };
 
-
 /*
-// TODO: remove this? expose connectors?
-public function get numInputConnectors(): uint {
-	return inputConnectors.numConnectors;
-}
-
-public function get numOutputConnectors(): uint {
-	return outputConnectors.numConnectors;
-}
-
 public function get hasHelpPatch(): Boolean {
 	return Boolean(HelpXML);
 }

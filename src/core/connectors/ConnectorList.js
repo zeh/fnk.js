@@ -46,6 +46,10 @@ FNK.ConnectorList.prototype.getConnectorAt = function(__position) {
 	return this.connectors[this.ids[__position]];
 };
 
+FNK.ConnectorList.prototype.getConnectorIdAt = function(__position) {
+	return this.ids[__position];
+};
+
 FNK.ConnectorList.prototype.getConnectorPosition = function(__id) {
 	return this.ids.indexOf(__id);
 };
