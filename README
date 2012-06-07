@@ -1,3 +1,14 @@
-An easy to learn visual programming environment based on an internal functional language.
+FNK is an easy-to-learn visual programming environment based on an internal functional language.
 
-Still setting this up and planning. No crazy plans ahead, just something for fun and learning.
+It aims to be a "visual programming environment for audio and image processing", accessible to everyone through a browser.
+
+It is based on my graduation project, which was originally done in Flash:
+http://ffnnkk.org/launched/
+
+No crazy plans ahead, just something I'm doing for fun and learning.
+
+Here's an early prototype of the editor interface:
+http://fnkjs.org/lol/
+
+And the language is running! You can see it here (check the source and the console output):
+http://fnkjs.org/lol2/engine/
