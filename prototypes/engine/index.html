@@ -9,6 +9,7 @@
 	<script src="../../src/Fnk.js"></script>
 
 		<script src="../../src/core/data/DataType.js"></script>
+		<script src="../../src/core/data/CategoryType.js"></script>
 
 		<script src="../../src/core/connectors/Connector.js"></script>
 			<script src="../../src/core/connectors/ConnectorList.js"></script>
@@ -21,6 +22,7 @@
 			<script src="../../src/core/nodes/MultipleInputNode.js"></script>
 				<script src="../../src/core/nodes/OperationNode.js"></script>
 					<script src="../../src/core/nodes/number/NumberAdd.js"></script>
+					<script src="../../src/core/nodes/number/NumberSubtract.js"></script>
 
 		<script src="../../src/core/patch/Patch.js"></script>
 
@@ -68,6 +70,32 @@
 			linkresult.setOutputNode(resultnode, resultnode.getInputConnectorIdAt(0));
 			patch.addLink(linkresult);
 
+			// Subtraction
+			var nodec = new FNK.NumberIONode();
+			nodec.getInputConnectorAt(0).setValue([5], FNK.DataType.NUMBER);
+			patch.addNode(nodec);
+
+			var snode = new FNK.NumberSubtract();
+			patch.addNode(snode);
+
+			var noded = new FNK.NumberIONode();
+			patch.addNode(noded);
+
+			var linkc = new FNK.Link();
+			linkc.setInputNode(resultnode, resultnode.getOutputConnectorIdAt(0));
+			linkc.setOutputNode(snode, snode.getInputConnectorIdAt(0));
+			patch.addLink(linkc);
+
+			var linkd = new FNK.Link();
+			linkd.setInputNode(nodec, nodec.getOutputConnectorIdAt(0));
+			linkd.setOutputNode(snode, snode.getInputConnectorIdAt(1));
+			patch.addLink(linkd);
+
+			var linke = new FNK.Link();
+			linke.setInputNode(snode, snode.getOutputConnectorIdAt(0));
+			linke.setOutputNode(noded, noded.getInputConnectorIdAt(0));
+			patch.addLink(linke);
+
 			console.log("===================>>>> Processing patch...");
 
 			patch.process();
@@ -83,6 +111,9 @@
 			console.log("==== Node b: " + nodeb + " = " + nodeb.getOutputConnectorAt(0).getValue());
 			console.log("==== Node add: " + pnode + " = " + pnode.getOutputConnectorAt(0).getValue());
 			console.log("==== Node result: " + resultnode + " = " + resultnode.getOutputConnectorAt(0).getValue());
+			console.log("==== Node c: " + nodec + " = " + nodec.getOutputConnectorAt(0).getValue());
+			console.log("==== Node subtract: " + snode + " = " + snode.getOutputConnectorAt(0).getValue());
+			console.log("==== Node d: " + noded + " = " + noded.getOutputConnectorAt(0).getValue());
 		}
 		
 	</script>

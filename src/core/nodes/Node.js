@@ -21,18 +21,16 @@ FNK.Node.CONNECTOR_ID_INPUT = "input";
 FNK.Node.CONNECTOR_ID_OUTPUT = "output";
 FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
 
-
+// Static properties
+FNK.Node.prototype.description = "null";
+FNK.Node.prototype.categoryType = FNK.CategoryType.OTHER;
+//		protected var HelpXML:Class;
+	//renderingClass = VisibleNode;
 
 // ================================================================================================================
 // INTERNAL interface ---------------------------------------------------------------------------------------------
 
 FNK.Node.prototype.setInitialData = function() {
-	// Static properties for rendering purposes
-	//		public var renderingClass:Class;
-	this.renderingCaption = "null";				// What's displayed on the node								"+"
-	this.categoryType = "";					// Node category type (NOT the same as data type)			"Number"
-	this.selectingCaption = "";				// What's the display name of the node, for selection		"+ (Number)"
-			
 	// Instance properties
 	this.alwaysProcess = false;				// Whether it should always execute on every frame
 	this.patch = undefined;					// Patch where this node is in
@@ -41,12 +39,6 @@ FNK.Node.prototype.setInitialData = function() {
 	this.inputConnectors = undefined;
 	this.outputConnectors = undefined;
 	this.parameters = undefined;
-		
-//		protected var HelpXML:Class;
-
-	//renderingClass = VisibleNode;
-	//categoryType = CategoryType.SYSTEM;
-	//selectingCaption = renderingCaption + " ("+categoryType+")";
 };
 
 FNK.Node.prototype.createConnectors = function() {
@@ -105,7 +97,7 @@ FNK.Node.prototype.getNumOutputConnectors = function() {
 	return this.outputConnectors.getNumConnectors();
 };
 
-FNK.Node.prototypedispose = function() {
+FNK.Node.prototype.dispose = function() {
 	//dispatchEvent(new NodeEvent(NodeEvent.DISPOSE, this));
 	this.patch = undefined;
 	this.renderingClass = undefined;
@@ -159,7 +151,7 @@ FNK.Node.prototype.dispatchChange = function() {
 
 FNK.Node.prototype.toString = function() {
 	//return "[" + getQualifiedClassName(this) + "]";
-	return "[" + this.renderingCaption + "]";
+	return "[" + this.description + " (" + this.categoryType + ")]";
 };
 
 /*

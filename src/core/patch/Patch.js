@@ -60,7 +60,7 @@ FNK.Patch.prototype.process = function() {
 	i = 0;
 	var cycles = 0; // TODO: sanity check; remove this
 	while (i < this.nodes.length && cycles < 100) {
-		FNK.log("  Processing node " + i + ": " + this.nodes[i] + " (" + cycles + " cycles done so far)");
+		FNK.log("  Processing node " + i + "/" + this.nodes.length + ": " + this.nodes[i] + " (" + cycles + " cycles done so far)");
 
 		cycles++;
 
@@ -71,8 +71,6 @@ FNK.Patch.prototype.process = function() {
 		canProcess = true;
 
 		for (j = 0; j < this.links.length; j++) {
-			FNK.log("    Processing link " + i);
-
 			// TODO: optimize this with a dictionary lookup for nodes -> links?
 			if (this.links[j].outputNode == tNode && this.nodes.indexOf(this.links[j].inputNode) > i) {
 				if (this.links[j].delayed) {
@@ -88,13 +86,11 @@ FNK.Patch.prototype.process = function() {
 		
 		if (canProcess) {
 			// Can process, do it and continue					
-			FNK.log("    Can process!");
-
 			// Process all related links first
 			// TODO - onlyu process nodes that need processing? Because the events have been removed from the actionscript version, it's brute-forcing all updates
 			for (j = 0; j < this.links.length; j++) {
 				if (this.links[j].outputNode == tNode) {
-					FNK.log("      Processing input link " + i);
+					//FNK.log("      Processing input link " + i);
 					this.links[j].process();
 				}
 			}
@@ -104,7 +100,7 @@ FNK.Patch.prototype.process = function() {
 			i++;
 		} else {
 			// Can't process, move to end of list
-			FNK.log("    Cannot process node ["+i+"] ["+tNode+"] yet -- shouldn't be here, moving to end of list");
+			FNK.warn("    Cannot process node ["+i+"] ["+tNode+"] yet -- shouldn't be here, moving to end of list");
 			cycles++;
 
 			this.nodes.splice(i, 1);
@@ -115,6 +111,8 @@ FNK.Patch.prototype.process = function() {
 //			Console.getInstance().echo("  Ended node cycle in " + (getTimer() - _lastProcessTime) + "ms");
 	
 	this.lastProcessTime = FNK.getTimer() - this.currentTime;
+
+	FNK.log("Done; spent " + this.lastProcessTime + "ms processing the patch.");
 	
 	if (cycles >= 100) FNK.error("Error: timeout after "+cycles+" cycles");
 };

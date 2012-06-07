@@ -13,7 +13,6 @@ FNK.DataType.prototype.constructor = FNK.DataType;
 // STATIC properties ----------------------------------------------------------------------------------------------
 
 // Constants
-
 FNK.DataType.NUMBER = "Number";
 FNK.DataType.STRING = "String";
 FNK.DataType.COLOR = "Color";
