@@ -1,0 +1,62 @@
+/*
+ * The base theme for the editor viewport.
+ * New themes should use this as a base, extending or changing the properties defined here.
+ */
+.fnk-viewer {
+	background: #f2f2f2;
+	overflow: auto;
+	position: relative;
+}
+
+.fnk-node {
+	border: 2px solid #a4a4a4;
+	display: block;
+	position: absolute;
+	border-radius: 4px;
+	width: 100px;
+	height: 40px;
+
+	background: #ffffff;
+	color: #000000;
+
+	cursor: move;
+	
+	/* Drop shadow */
+	box-shadow: 0 0 5px #d0d0d0;
+
+	/* Unselectable */
+	/* Doesn't work on MSIE 9, Opera 11.6 */
+	-ms-user-select: none; /* Starting in MSIE 10 */
+	-khtml-user-select: none;
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.fnk-link {
+	stroke: #000000;
+}
+
+/* Dark theme */
+
+/*
+.fnk-viewer {
+	background: #22282a;
+}
+
+.fnk-node {
+	border-top-color: #444444;
+	border-bottom-color: #444444;
+	border-left-color: #444444;
+	border-right-color: #444444;
+
+	box-shadow: 0 0 5px #111111;
+
+	background: #303030;
+	color: #e0e0e0;
+}
+
+.fnk-link {
+	stroke: #999999;
+}
+*/
