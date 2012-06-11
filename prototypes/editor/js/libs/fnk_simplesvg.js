@@ -67,6 +67,7 @@ SimpleSVG.prototype.path = function(__commands) {
 	shape.setAttributeNS(null, "stroke-width", "1");
 	shape.setAttributeNS(null, "stroke", "#000000");
 	shape.setAttributeNS(null, "fill", "none");
+	shape.setAttributeNS(null, "class", "fnk-link");
 	
 	this.element.appendChild(shape);
 	//<path d="M 100 100 L 300 100 L 200 300 z" fill="red" stroke="blue" stroke-width="3" />
