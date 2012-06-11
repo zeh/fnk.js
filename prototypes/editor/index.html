@@ -1,19 +1,60 @@
 ﻿<!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<html lang="en">
 <head>
+
+	<!-- Meta data -->
+
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title></title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title></title>
+
+
+	<!-- Stylesheets -->
 
 	<link rel="stylesheet" href="css/style.css">
+
+	<link rel="stylesheet" href="css/fnkeditor_theme_base.css">
+
+
+	<!-- Scripts: Fnk engine -->
+
+	<script src="../../src/core/FNK.js"></script>
+
+		<script src="../../src/core/data/DataType.js"></script>
+		<script src="../../src/core/data/CategoryType.js"></script>
+
+		<script src="../../src/core/data/models/PatchHeader.js"></script>
+
+		<script src="../../src/core/connectors/Connector.js"></script>
+			<script src="../../src/core/connectors/ConnectorList.js"></script>
+
+		<script src="../../src/core/links/Link.js"></script>
+		<script src="../../src/core/nodes/Node.js"></script>
+
+			<script src="../../src/core/nodes/IONode.js"></script>
+				<script src="../../src/core/nodes/number/NumberIONode.js"></script>
+			<script src="../../src/core/nodes/MultipleInputNode.js"></script>
+				<script src="../../src/core/nodes/OperationNode.js"></script>
+					<script src="../../src/core/nodes/number/NumberAdd.js"></script>
+					<script src="../../src/core/nodes/number/NumberSubtract.js"></script>
+
+		<script src="../../src/core/patch/Patch.js"></script>
+
+
+	<!-- Scripts: Fnk editor -->
+
+	<script src="../../src/editor/FNKEditor.js"></script>
+
+		<script src="../../src/editor/display/nodes/VisibleNode.js"></script>
+
+		<script src="../../src/editor/display/patch/PatchViewer.js"></script>
+
+	<!-- Scripts: Other -->
 
 	<script src="js/libs/modernizr-2.0.6.min.js"></script>
 	<script src="js/libs/fnk_simplesvg.js"></script>
@@ -137,7 +178,7 @@
 				{command:"Q", parameters:[[ex, sy + dy*0.75], [ex, ey]]}
 			]);
 			
-			testLineCanvas.element.set
+			//testLineCanvas.element.set
 			
 			//context.strokeStyle = "#333333";
 			//context.lineJoin = "round";
@@ -151,84 +192,72 @@
 		}
 		
 		function onLoaded() {
+			// Create TEST elements
 			var element;
 
-			element = document.getElementsByClassName("fnk_node")[0];
+			element = document.getElementsByClassName("fnk-node")[0];
 			element.style.top = "10px";
 			element.style.left = "10px";
 
-			element = document.getElementsByClassName("fnk_node")[1];
+			element = document.getElementsByClassName("fnk-node")[1];
 			element.style.top = "100px";
 			element.style.left = "100px";
 			
 			updateLines();
+
+			element = document.getElementById("fnk-viewer-temp");
+			element.ondblclick = onDoubleClickEditor;
+
+			// Creates actual viewer
+			viewer = new FNKEditor.PatchViewer();
+			viewer.setSize(400, 400);
+
+			// Create node A
+			var nodeA = new FNK.NumberIONode();
+			var nodeAVis = new FNKEditor.VisibleNode(nodeA);
+
+			nodeAVis.setPosition(10, 10);
+			nodeAVis.setSize(100, 15);
+
+			viewer.addVisibleNode(nodeAVis);
+
+			// Create node B
+			var nodeB = new FNK.NumberIONode();
+			var nodeBVis = new FNKEditor.VisibleNode(nodeB);
+
+			nodeBVis.setPosition(210, 10);
+			nodeBVis.setSize(100, 15);
+
+			viewer.addVisibleNode(nodeBVis);
+
+			// Create node sum
+			var nodeS = new FNK.NumberAdd();
+			var nodeSVis = new FNKEditor.VisibleNode(nodeS);
+
+			nodeSVis.setPosition(110, 50);
+			nodeSVis.setSize(100, 15);
+
+			viewer.addVisibleNode(nodeSVis);
+
+			// Create node C (result)
+			var nodeC = new FNK.NumberIONode();
+			var nodeCVis = new FNKEditor.VisibleNode(nodeC);
+
+			nodeCVis.setPosition(110, 100);
+			nodeCVis.setSize(100, 15);
+
+			viewer.addVisibleNode(nodeCVis);
+
+		}
+
+		function onDoubleClickEditor(event) {
+			console.log("Double click");
 		}
 	</script>
 	
 	<style type='text/css'>
 		body {
-			background: #f2f2f2;
-		}
-		.fnk_node {
-			border: 2px solid #a4a4a4;
-			display: block;
-			position: absolute;
-			border-radius: 4px;
-			width: 100px;
-			height: 40px;
 			background: #ffffff;
-
-			cursor: move; /* nwse-resize */
-			
-			box-shadow: 0 0 5px #d0d0d0;
-
-			/* Unselectable */
-			/* Doesn't work on MSIE 9, Opera 11.6 */
-			-ms-user-select: none; /* Starting in MSIE 10 */
-			-khtml-user-select: none;
-			-moz-user-select: -moz-none;
-			-webkit-user-select: none;
-			user-select: none;
-		}
-
-		.fnk_nodeold {
-			border: 1px solid #000000;
-			display: block;
-			position: absolute;
-			width: 100px;
-			height: 40px;
-			//height: 80px;
-			//top: 100px;
-			//left: 100px;
-			cursor: move; /* nwse-resize */
-			
-			border-width: 8px 8px 8px 8px;
-
-			/* Border skin */
-			/* Doesn't work on MSIE 9 */
-			-ms-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-			-khtml-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-			-o-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-			-moz-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-			-webkit-border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-			border-image: url("images/node_background.png") 8 8 8 8 repeat repeat;
-
-			/* Unselectable */
-			/* Doesn't work on MSIE 9, Opera 11.6 */
-			-ms-user-select: none;
-			-khtml-user-select: none;	/* Safari? */
-			-o-user-select: none;
-			-moz-user-select: -moz-none;
-			-webkit-user-select: none;
-			user-select: none;
-			
-			/*
-			-o-transform: translateZ(0);
-			-ms-transform: translateZ(0);
-			-moz-transform: translateZ(0);
-			-webkit-transform: translateZ(0);
-			transform: translateZ(0);
-			*/
 		}
 	</style>
 </head>
@@ -238,9 +267,9 @@
 	<header>
 
 	</header>
-	<div id="main" role="main">
-		<div class="fnk_node" id="node1" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
-		<div class="fnk_node" id="node2" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
+	<div id="fnk-viewer-temp" class="fnk-viewer" style="width: 500px; height: 500px">
+		<div class="fnk-node" id="node1" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
+		<div class="fnk-node" id="node2" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
 	</div>
 	<footer>
 
