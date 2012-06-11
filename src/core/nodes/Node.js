@@ -25,7 +25,7 @@ FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
 FNK.Node.prototype.description = "null";
 FNK.Node.prototype.categoryType = FNK.CategoryType.OTHER;
 //		protected var HelpXML:Class;
-	//renderingClass = VisibleNode;
+
 
 // ================================================================================================================
 // INTERNAL interface ---------------------------------------------------------------------------------------------
@@ -49,7 +49,6 @@ FNK.Node.prototype.createConnectors = function() {
 
 FNK.Node.prototype.populateConnectors = function() {
 	// Actually populate the connector list with the expected connectors
-	
 };
 
 FNK.Node.prototype.createParameters = function() {
