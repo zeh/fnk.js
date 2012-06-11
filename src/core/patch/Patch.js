@@ -20,7 +20,6 @@ FNK.Patch.prototype.constructor = FNK.Patch;
 FNK.Patch.prototype.addNode = function(__node) {
 	this.nodes.push(__node);
 	__node.patch = this;
-	//__node.addEventListener(NodeEvent.OUTPUT_CONNECTOR_VALUE_CHANGE, onNodeOutputConnectorChanged);
 };
 
 FNK.Patch.prototype.removeNode = function(__node) {
@@ -28,7 +27,6 @@ FNK.Patch.prototype.removeNode = function(__node) {
 	if (i > -1) {
 		this.nodes.splice(i, 1);
 		__node.patch = undefined;
-		//__node.removeEventListener(NodeEvent.OUTPUT_CONNECTOR_VALUE_CHANGE, onNodeOutputConnectorChanged);
 	}
 };
 
@@ -108,9 +106,7 @@ FNK.Patch.prototype.process = function() {
 			this.nodes.push(tNode);
 		}
 	}
-	
-//			Console.getInstance().echo("  Ended node cycle in " + (getTimer() - _lastProcessTime) + "ms");
-	
+
 	this.lastProcessTime = FNK.getTimer() - this.currentTime;
 
 	FNK.log("Done; spent " + this.lastProcessTime + "ms processing the patch.");
@@ -128,18 +124,3 @@ FNK.Patch.prototype.isNodeConnected = function(__node, __connectorId, __connecto
 	}
 	return false;
 };
-
-
-// ================================================================================================================
-// EVENT functions ------------------------------------------------------------------------------------------------
-
-/*
-protected function onNodeOutputConnectorChanged(e:NodeEvent): void {
-	// TODO: optimize this with a dictionary lookup for nodes -> links?
-	for (var i:Number = 0; i < links.length; i++) {
-		if (links[i].inputNode == e.node && links[i].inputConnector == e.outputConnector) {
-			links[i].process();
-		}
-	}
-}
-*/
