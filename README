@@ -12,3 +12,23 @@ http://fnkjs.org/lol/
 
 And the language is running! You can see it here (check the source and the console output):
 http://fnkjs.org/lol2/engine/
+
+ACKNOWLEDGMENTS
+===============
+
+While not formally based on it, Fnk.js reuses a lot of concepts borrowed from the Three.js project, namely the codefile structure for the source files.
+https://github.com/mrdoob/three.js/
+
+The whole idea behind Fnk.js is only possible because other similar languages and platforms came first. There are plenty of those, but these are the better known ones:
+
+Max (aka Max/MSP)
+http://cycling74.com/products/max/
+
+vvvv
+http://vvvv.org/
+
+Pd (aka Pure Data)
+http://puredata.info/
+
+More acknowledgments can be found in the original project's page (will be moved here soon).
+http://ffnnkk.org/about/acknowledgments/
