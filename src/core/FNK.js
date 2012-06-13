@@ -4,7 +4,7 @@
 
 var FNK = FNK || {
 	version: "1.0"
-}
+};
 
 FNK.getTimer = function() {
 	return new Date().valueOf() - this.timeStarted;

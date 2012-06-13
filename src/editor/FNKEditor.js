@@ -4,4 +4,4 @@
 
 var FNKEditor = FNKEditor || {
 	version: "1.0"
-}
+};
