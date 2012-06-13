@@ -62,6 +62,7 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.hasText = true;
 
 	this.element = undefined;
+	this.lastMouseEvent = null;
 
 	// Create stuff
 	this.createElement();
@@ -69,6 +70,9 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	// Final visual update
 	this.updateElementPosition();
 	this.updateElementSize();
+
+	// Signals for events
+	this.startMovingSignal = new SimpleSignal();
 	
 	/*
 	inputConnectorsLinked = new Vector.<Boolean>(node.numInputConnectors);
@@ -105,8 +109,21 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	// Create document element
 	this.element = document.createElement("div");
 	this.element.className = "fnk-node";
-	
-	//document.body.appendChild(this.element);
+
+	var moveBar = document.createElement("div");
+	moveBar.className = "fnk-node-bar-move";
+	this.element.appendChild(moveBar);
+
+	var resizeBar = document.createElement("div");
+	resizeBar.className = "fnk-node-bar-resize";
+	this.element.appendChild(resizeBar);
+
+	var contentBox = document.createElement("div");
+	contentBox.className = "fnk-node-content";
+	this.element.appendChild(contentBox);
+
+	moveBar.targetVisualNode = this;
+	moveBar.onmousedown = this.onMouseDownStartMoving;
 };
 
 FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
@@ -458,10 +475,22 @@ protected function stopEditingConnector(e:Event = null): void {
 		dispatchEvent(createNewEvent(VisibleNodeEvent.EDIT_END));
 	}
 }
+*/
 
 // ================================================================================================================
 // EVENT functions ------------------------------------------------------------------------------------------------
 
+FNKEditor.VisibleNode.prototype.onMouseDownStartMoving = function(__event) {
+	// Request that the container start moving this element
+	// This is ran from the div element's scope
+
+	this.targetVisualNode.lastMouseEvent = __event;
+
+	// Dispatch the related signal
+	this.targetVisualNode.startMovingSignal.dispatch();
+};
+
+/*
 protected function onMouseOverMove(e:MouseEvent = null):void {
 	dispatchEvent(createNewEvent(VisibleNodeEvent.MOUSE_OVER_MOVE));
 }
@@ -613,6 +642,10 @@ FNKEditor.VisibleNode.prototype.getElement = function() {
 	return this.element;
 };
 
+FNKEditor.VisibleNode.prototype.getLastMouseEvent = function() {
+	return this.lastMouseEvent;
+};
+
 /*
 override public function get x():Number { 
 	return super.x;
@@ -650,12 +683,13 @@ public function set resizable(__value:Boolean):void {
 	_resizable = __value;
 	redraw();
 }
-
-public function get isSelected():Boolean {
-	return _isSelected;
-}
-public function set isSelected(isSelected:Boolean):void {
-	_isSelected = isSelected;
-	redrawSelection();
-}
 */
+
+FNKEditor.VisibleNode.prototype.getSelected = function() {
+	return this.isSelected;
+};
+
+FNKEditor.VisibleNode.prototype.setSelected = function(__isSelected) {
+	this.isSelected = __isSelected;
+	//redrawSelection();
+};

@@ -15,6 +15,7 @@
 	border-radius: 4px;
 	width: 100px;
 	height: 40px;
+	padding: 0px;
 
 	background: #ffffff;
 	color: #000000;
@@ -31,6 +32,48 @@
 	-moz-user-select: -moz-none;
 	-webkit-user-select: none;
 	user-select: none;
+}
+
+.fnk-node-bar-move {
+	position: absolute;
+	background-image: url('../images/pattern_dotted.png');
+	background-position: top left;
+	background-repeat: repeat;
+	width: 9px;
+	top: 1px;
+	bottom: 1px;
+	left: 1px;
+	opacity: 0.4;
+	-webkit-filter: invert(1);
+	border-top-left-radius: 1px;
+	border-bottom-left-radius: 1px;
+}
+
+.fnk-node-bar-resize {
+	position: absolute;
+	background-image: url('../images/pattern_diagonal.png');
+	background-position: top right;
+	width: 9px;
+	top: 1px;
+	bottom: 1px;
+	right: 1px;
+	opacity: 0.4;
+	-webkit-filter: invert(1);
+	border-top-right-radius: 1px;
+	border-bottom-right-radius: 1px;
+
+	cursor: nw-resize;
+}
+
+.fnk-node-content {
+	position: absolute;
+	background: #ffffff;
+	top: 0px;
+	bottom: 0px;
+	left: 11px;
+	right: 11px;
+	top: 1px;
+	bottom: 1px;
 }
 
 .fnk-link {
