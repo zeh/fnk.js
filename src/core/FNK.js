@@ -28,3 +28,25 @@ FNK.warn = function(__message) {
 FNK.error = function(__message) {
 	console.error(FNK.getFormattedTime() + __message);
 };
+
+// Move this somewhere else?
+
+FNK.addClassToElement = function(__element, __className) {
+	if (__element.classList == undefined) {
+		// MSIE
+		__element.className = __element.className.split(__className).join("") + " " + __className;
+	} else {
+		// All other browsers
+		__element.classList.add(__className);
+	}
+};
+
+FNK.removeClassFromElement = function(__element, __className) {
+	if (__element.classList == undefined) {
+		// MSIE
+		__element.className = __element.className.split(__className).join("");
+	} else {
+		// All other browsers
+		__element.classList.remove(__className);
+	}
+}

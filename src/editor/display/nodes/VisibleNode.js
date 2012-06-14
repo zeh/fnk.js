@@ -70,6 +70,7 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	// Final visual update
 	this.updateElementPosition();
 	this.updateElementSize();
+	this.updateElementSelection();
 
 	// Signals for events
 	this.startMovingSignal = new SimpleSignal();
@@ -96,6 +97,8 @@ FNKEditor.VisibleNode.MAXIMUM_WIDTH = 1000;
 FNKEditor.VisibleNode.MINIMUM_HEIGHT = 15;
 FNKEditor.VisibleNode.MAXIMUM_HEIGHT = 1001;
 */
+FNKEditor.VisibleNode.CLASS_SELECTED = "fnk-node-selected";
+FNKEditor.VisibleNode.CLASS_UNSELECTED = "fnk-node-unselected";
 FNKEditor.VisibleNode.DEFAULT_WIDTH = 80;
 FNKEditor.VisibleNode.DEFAULT_HEIGHT = 15;
 
@@ -134,6 +137,16 @@ FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
 FNKEditor.VisibleNode.prototype.updateElementSize = function() {
 	this.element.style.width = this.width + "px";
 	this.element.style.height = this.height + "px";
+};
+
+FNKEditor.VisibleNode.prototype.updateElementSelection = function() {
+	if (this.isSelected) {
+		FNK.removeClassFromElement(this.element, FNKEditor.VisibleNode.CLASS_UNSELECTED);
+		FNK.addClassToElement(this.element, FNKEditor.VisibleNode.CLASS_SELECTED);
+	} else {
+		FNK.addClassToElement(this.element, FNKEditor.VisibleNode.CLASS_UNSELECTED);
+		FNK.removeClassFromElement(this.element, FNKEditor.VisibleNode.CLASS_SELECTED);
+	}
 };
 
 /*
@@ -691,5 +704,5 @@ FNKEditor.VisibleNode.prototype.getSelected = function() {
 
 FNKEditor.VisibleNode.prototype.setSelected = function(__isSelected) {
 	this.isSelected = __isSelected;
-	//redrawSelection();
+	this.updateElementSelection();
 };
