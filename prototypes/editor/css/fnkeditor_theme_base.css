@@ -34,6 +34,15 @@
 	user-select: none;
 }
 
+.fnk-node-unselected {
+}
+
+.fnk-node-selected {
+	/* -webkit-filter: brightness(-0.2); */
+	background: #cccccc;
+	border-color: #999999;
+}
+
 .fnk-node-bar-move {
 	position: absolute;
 	background-image: url('../images/pattern_dotted.png');
@@ -44,7 +53,7 @@
 	bottom: 1px;
 	left: 1px;
 	opacity: 0.4;
-	-webkit-filter: invert(1);
+	-webkit-filter: invert(1); /* use brightness instead? */
 	border-top-left-radius: 1px;
 	border-bottom-left-radius: 1px;
 }
@@ -67,7 +76,6 @@
 
 .fnk-node-content {
 	position: absolute;
-	background: #ffffff;
 	top: 0px;
 	bottom: 0px;
 	left: 11px;
