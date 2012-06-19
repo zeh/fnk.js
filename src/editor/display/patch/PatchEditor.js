@@ -266,19 +266,18 @@ FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartMoving = function(__visi
 	//if (isMovingFreely) {
 	//	hideCurrentTooltip();
 		var canStartMoving = true;
-	//	if (selectedVisibleNodes.indexOf(__visibleNode) > -1) {
-	//		// Already selected
-	//		if (KeyboardUtils.isShiftDown()) {
-	//			deselectVisibleNode(e.visibleNode);
-	//			canStartMoving = false;
-	//		}
-	//	} else {
-	//		// Not selected
-	//		if (!KeyboardUtils.isAdditionalSelectionModifierDown()) selectNone();
-			this.selectNone();
+		if (this.selectedVisibleNodes.indexOf(__visibleNode) > -1) {
+			// Already selected
+			if (FNK.KeyboardState.isMultipleSelectionKeyDown()) {
+				this.deselectVisibleNode(__visibleNode);
+				canStartMoving = false;
+			}
+		} else {
+			// Not selected
+			if (!FNK.KeyboardState.isMultipleSelectionKeyDown()) this.selectNone();
 			this.bringNodeToFront(__visibleNode);
 			this.selectVisibleNode(__visibleNode);
-	//	}
+		}
 		if (canStartMoving) this.startMovingSelection(__visibleNode.getLastMouseEvent());
 	//}
 };
@@ -287,19 +286,18 @@ FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartResizing = function(__vi
 	//if (isMovingFreely) {
 	//	hideCurrentTooltip();
 		var canStartResizing = true;
-	//	if (selectedVisibleNodes.indexOf(e.visibleNode) > -1) {
-	//		// Already selected
-	//		if (KeyboardUtils.isShiftDown()) {
-	//			deselectVisibleNode(e.visibleNode);
-	//			canStartResizing = false;
-	//		}
-	//	} else {
-	//		// Not selected
-	//		if (!KeyboardUtils.isShiftDown()) selectNone();
-			this.selectNone();
+		if (this.selectedVisibleNodes.indexOf(__visibleNode) > -1) {
+			// Already selected
+			if (FNK.KeyboardState.isMultipleSelectionKeyDown()) {
+				this.deselectVisibleNode(__visibleNode);
+				canStartResizing = false;
+			}
+		} else {
+			// Not selected
+			if (!FNK.KeyboardState.isMultipleSelectionKeyDown()) this.selectNone();
 			this.bringNodeToFront(__visibleNode);
 			this.selectVisibleNode(__visibleNode);
-	//	}
+		}
 		if (canStartResizing) this.startResizingSelection(__visibleNode.getLastMouseEvent());
 	//}
 };
