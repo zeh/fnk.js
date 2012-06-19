@@ -74,6 +74,7 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 
 	// Signals for events
 	this.startMovingSignal = new SimpleSignal();
+	this.startResizingSignal = new SimpleSignal();
 	
 	/*
 	inputConnectorsLinked = new Vector.<Boolean>(node.numInputConnectors);
@@ -127,6 +128,9 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 
 	moveBar.targetVisualNode = this;
 	moveBar.onmousedown = this.onMouseDownStartMoving;
+
+	resizeBar.targetVisualNode = this;
+	resizeBar.onmousedown = this.onMouseDownStartResizing;
 
 	if (!this.hasMoveHandle) {
 		moveBar.style.visibility = "hidden";
@@ -520,6 +524,16 @@ FNKEditor.VisibleNode.prototype.onMouseDownStartMoving = function(__event) {
 
 	// Dispatch the related signal
 	this.targetVisualNode.startMovingSignal.dispatch();
+};
+
+FNKEditor.VisibleNode.prototype.onMouseDownStartResizing = function(__event) {
+	// Request that the container start resizing this element
+	// This is ran from the div element's scope
+
+	this.targetVisualNode.lastMouseEvent = __event;
+
+	// Dispatch the related signal
+	this.targetVisualNode.startResizingSignal.dispatch();
 };
 
 /*
