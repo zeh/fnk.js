@@ -23,6 +23,7 @@ Display: Transition
 Inputs: Starting Value (float); Ending Value (float); Time (float, seconds); Paused (boolean, 1/0);
 Outputs: Output Value (float); Current Phase (float, 0-1); Cycles completed (int)
 Description: continuously does a transition from one value to another.
+* Add Animation equation here?
 
 
 NUMBER
@@ -183,8 +184,36 @@ Outputs: output-0 (string)
 Description: multiplies a string several times.
 
 
-GENERAL
+SYSTEM
 ------
+
+KEYBOARD
+Display: Keyboard
+Inputs: -
+Outputs: Current Key Code pressed (int), current char code pressed (int), current unicode key identifier (string?), current key location (int), ctrl key state (int, 0/1), shift key state (int, 0/1), alt key state (0/1), alt gr key state (0/1)
+Description: Shows information about the keyboard (keys pressed)
+
+STATISTICS
+Display: Statistics
+Inputs: -
+Outputs: Global framerate (float), patch processing time per frame (float), global memory in use (int)
+Description: Benchmarking and debugging statistics.
+
+TIMING
+Display: Timing
+Inputs: -
+Outputs: Running time (float, in s), current frame (int)
+Description: Running time information, for animation purposes
+
+VERSION
+Display: Version
+Inputs: -
+Outputs: Version number (string), build number (int), build date (date), build time (time)
+Description: Version information.
+
+
+GENERAL/OTHER
+-------------
 
 SWITCH
 Display: ?
@@ -193,10 +222,11 @@ Outputs: output-0 (any)
 Description: does a switch, picking from different values depending on the value of the switch. The output has the same data type as the inputs.
 * NEED TO: properly understand inputs being connected; properly change the outputs; allow number of inputs to be changed?
 
+
+
 =======================
 SUGGESTIONS/OTHER IDEAS
 -----------------------
-
 
 NUMBER
 ------
@@ -208,3 +238,13 @@ Display:
 Inputs:
 Outputs:
 Description:
+
+
+FROM FNK.AS, need to format properly:
+
+Sound: AbstractSynth; AudioOut; AudioSpectrum; SawtoothSynth; SineSynth; SoundFile; SquareSynth; TriangleSynth
+Image: GetPixel; Image; ImageFile
+Graphic: AbstractSprite; CircleSprite; Display; Filter; FromImage; Group; LineSprite; Opacity; PathSprite; RectangleSprite; SortDepth; TextSprite; Transform; Transform2D; VideoIn
+Filter: Blur
+Color: FromHSV; From RGB
+Array: Concatenate; Length; LinearArray; RandomArray
