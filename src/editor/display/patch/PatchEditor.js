@@ -304,6 +304,38 @@ FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartResizing = function(__vi
 	//}
 };
 
+/*
+// ================================================================================================================
+// ACCESSOR functions ---------------------------------------------------------------------------------------------
+
+public function get isFocused(): Boolean {
+	return _isFocused;
+}
+
+public function get isMovingFreely(): Boolean {
+	return !isFullscreen && !isMovingSelection && !isResizingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink && !isEditingNode && !isEditingComment;
+}
+
+public function get numNodesSelected(): Number {
+	return selectedVisibleNodes.length;
+}
+
+public function get numLinksSelected(): Number {
+	return selectedVisibleLinks.length;
+}
+
+public function get numCommentsSelected(): Number {
+	return selectedVisibleComments.length;
+}
+
+public function get numLinksSelectedDelayed(): Number {
+	var lnks:Number = 0;
+	for (var i:Number = 0; i < selectedVisibleLinks.length; i++) {
+		if (Boolean(selectedVisibleLinks[i].link) && selectedVisibleLinks[i].link.delayed) lnks++;
+	}
+	return lnks;
+}
+*/
 
 /*
 protected function onVisibleNodeMove(e:VisibleNodeEvent): void {
@@ -1488,37 +1520,7 @@ package org.ffnnkk.display.patches {
 			}
 		}
 
-		
-		// ================================================================================================================
-		// ACCESSOR functions ---------------------------------------------------------------------------------------------
 
-		public function get isFocused(): Boolean {
-			return _isFocused;
-		}
-		
-		public function get isMovingFreely(): Boolean {
-			return !isFullscreen && !isMovingSelection && !isResizingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink && !isEditingNode && !isEditingComment;
-		}
-
-		public function get numNodesSelected(): Number {
-			return selectedVisibleNodes.length;
-		}
-		
-		public function get numLinksSelected(): Number {
-			return selectedVisibleLinks.length;
-		}
-
-		public function get numCommentsSelected(): Number {
-			return selectedVisibleComments.length;
-		}
-
-		public function get numLinksSelectedDelayed(): Number {
-			var lnks:Number = 0;
-			for (var i:Number = 0; i < selectedVisibleLinks.length; i++) {
-				if (Boolean(selectedVisibleLinks[i].link) && selectedVisibleLinks[i].link.delayed) lnks++;
-			}
-			return lnks;
-		}
 
 	}
 }
