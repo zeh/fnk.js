@@ -58,6 +58,7 @@
 		<script src="../../src/editor/display/nodes/VisibleNode.js"></script>
 
 		<script src="../../src/editor/display/patch/PatchViewer.js"></script>
+			<script src="../../src/editor/display/patch/PatchEditor.js"></script>
 
 	<!-- Scripts: Other -->
 
@@ -214,7 +215,7 @@
 			element.ondblclick = onDoubleClickEditor;
 
 			// Creates actual viewer
-			viewer = new FNKEditor.PatchViewer();
+			viewer = new FNKEditor.PatchEditor();
 			viewer.setSize(400, 400);
 
 			// Create node A

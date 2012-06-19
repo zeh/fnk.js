@@ -14,15 +14,9 @@ FNKEditor.PatchViewer = function() {
 
 	this.element = null;
 
-	this.selectedVisibleNodes = [];
-	this.selectedVisibleLinks = [];
-	this.selectedVisibleComments = [];
-
 	this.lastNodeLevel = 0;
 	this.lastLinkLevel = 0;
 	this.lastCommentLevel = 0;
-
-	this.resetSelection(); // Same as above...
 
 	/*
 	protected var _scrollX:Number;
@@ -41,10 +35,6 @@ FNKEditor.PatchViewer = function() {
 	this.width = 100;					// TYPE: int
 	this.height = 100;					// TYPE: int
 
-	this.lastMousePosition = null;
-	this.isMovingSelection = false;
-
-	
 	/*
 	protected var _frameRate:Number;
 	
@@ -101,7 +91,7 @@ FNKEditor.PatchViewer.prototype.createElement = function () {
 	this.element = document.createElement("div");
 	this.element.className = "fnk-viewer";
 
-	document.body.appendChild(this.element);
+	if (document.body != null) document.body.appendChild(this.element);
 
 	this.commentContainer = document.createElement("div");
 	this.element.appendChild(this.commentContainer);
@@ -322,11 +312,6 @@ FNKEditor.PatchViewer.prototype.addVisibleNode = function(__visibleNode) {
 
 	this.nodeContainer.appendChild(__visibleNode.getElement());
 	this.bringNodeToFront(__visibleNode);
-
-	__visibleNode.startMovingSignal.add(this.onVisibleNodeShouldStartMoving, this, [__visibleNode]);
-
-	//__visibleNode.addEventListener(VisibleNodeEvent.MOVE, onVisibleNodeMove);
-	//__visibleNode.addEventListener(VisibleNodeEvent.RESIZE, onVisibleNodeMove);
 };
 
 /*
@@ -592,111 +577,6 @@ FNKEditor.PatchViewer.prototype.bringNodeToFront = function(__visibleNode) {
 	__visibleNode.getElement().style.zIndex = ++this.lastNodeLevel;
 };
 
-FNKEditor.PatchViewer.prototype.startMovingSelection = function(__event) {
-	// From this point on, all mouse movements will drag the currently selected elements
-	// TODO: support touch events
-
-	document.onmousemove = this.onContinueMovingSelection;
-	document.onmouseup = this.onStopMovingSelection;
-	document.fnkTargetPatch = this;
-
-	this.lastMousePosition = null;
-	this.isMovingSelection = true;
-	this.onContinueMovingSelection(__event);
-
-	/*
-	function startElementDrag(e) {
-		draggingElement = e.target;
-		document.onmousemove = continueElementDrag;
-		document.onmouseup = stopElementDrag;
-		
-		e.preventDefault();
-		
-		draggingOffsetX = e.pageX - e.target.offsetLeft;
-		draggingOffsetY = e.pageY - e.target.offsetTop;
-		updatePosition(e.pageX, e.pageY);
-	}
-	function continueElementDrag(e) {
-		updatePosition(e.pageX, e.pageY);
-		
-		e.preventDefault();
-	}
-	function stopElementDrag(e) {
-		updatePosition(e.pageX, e.pageY);
-		
-		e.preventDefault();
-
-		draggingElement = undefined;
-		document.onmousemove = undefined;
-		document.onmouseup = undefined;
-	}
-	function updatePosition(x, y) {
-		draggingElement.style.left = x - draggingOffsetX + "px";
-		draggingElement.style.top = y - draggingOffsetY + "px";
-		
-		// document.body.scrollLeft
-		
-		updateLines();
-	}
-	*/
-};
-
-FNKEditor.PatchViewer.prototype.continueMovingSelection = function(__mouseX, __mouseY) {
-	if (this.lastMousePosition != null) {
-		this.moveSelection(__mouseX - this.lastMousePosition.x, __mouseY - this.lastMousePosition.y);
-	}
-
-	this.lastMousePosition = {x:__mouseX, y:__mouseY};
-};
-
-FNKEditor.PatchViewer.prototype.stopMovingSelection = function(__event) {
-	this.lastMousePosition = null;
-	this.isMovingSelection = false;
-	document.fnkTargetPatch = null;
-
-	document.onmousemove = null;
-	document.onmouseup = null;
-};
-
-FNKEditor.PatchViewer.prototype.onContinueMovingSelection = function(__event) {
-	document.fnkTargetPatch.continueMovingSelection.apply(document.fnkTargetPatch, [__event.clientX, __event.clientY]);
-	if (__event != undefined) __event.preventDefault();
-};
-
-FNKEditor.PatchViewer.prototype.onStopMovingSelection = function(__event) {
-	document.fnkTargetPatch.onContinueMovingSelection(__event);
-	document.fnkTargetPatch.stopMovingSelection.apply(document.fnkTargetPatch);
-};
-
-FNKEditor.PatchViewer.prototype.moveSelection = function(__offsetX, __offsetY) {
-	if (__offsetX == 0 && __offsetY == 0) return;
-	if (this.selectedVisibleNodes.length == 0 && this.selectedVisibleLinks.length == 0 && this.selectedVisibleComments.length == 0) return;
-	var i;
-	var selectedNodes = [];
-	for (i = 0; i < this.selectedVisibleNodes.length; i++) {
-		this.selectedVisibleNodes[i].setPosition(this.selectedVisibleNodes[i].x + __offsetX, this.selectedVisibleNodes[i].y + __offsetY);
-		selectedNodes.push(this.selectedVisibleNodes[i].node);
-	}
-	for (i = 0; i < this.selectedVisibleLinks.length; i++) {
-		this.selectedVisibleLinks[i].moveLineProperties(__offsetX, __offsetY);
-	}
-
-	// Verifies if non-selected links must be moved too (when both nodes are selected)
-	/*
-	for (i = 0; i < this.visibleLinks.length; i++) {
-		if (!visibleLinks[i].isSelected && selectedNodes.indexOf(visibleLinks[i].link.inputNode) > -1 && selectedNodes.indexOf(visibleLinks[i].link.outputNode) > -1) {
-			visibleLinks[i].moveLineProperties(__offsetX, __offsetY);
-		} 
-	}
-	for (i = 0; i < selectedVisibleComments.length; i++) {
-		selectedVisibleComments[i].x += __offsetX;
-		selectedVisibleComments[i].y += __offsetY;
-	}
-
-	updateScrollBoundaries();
-	dispatchChangeEvent();
-	*/
-};
 
 /*
 // ================================================================================================================
@@ -1048,68 +928,6 @@ public function removeAllNodes(): void {
 }
 */
 
-FNKEditor.PatchViewer.prototype.selectAll = function() {
-	var i;
-	for (i = 0; i < this.visibleNodes.length; i++) {
-		if (!this.visibleNodes[i].getSelected()) {
-			this.selectVisibleNode(this.visibleNodes[i]);
-		}
-	}
-
-	for (i = 0; i < visibleLinks.length; i++) {
-		if (!this.visibleLinks[i].getSelected()) {
-			this.selectVisibleLink(this.visibleLinks[i]);
-		}
-	}
-
-	for (i = 0; i < visibleComments.length; i++) {
-		if (!this.visibleComments[i].getSelected()) {
-			this.selectVisibleComment(this.visibleComments[i]);
-		}
-	}
-
-};
-
-FNKEditor.PatchViewer.prototype.selectNone = function() {
-	var i;
-	for (i = 0; i < this.selectedVisibleNodes.length; i++) {
-		this.selectedVisibleNodes[i].setSelected(false);
-	}
-
-	for (i = 0; i < this.selectedVisibleLinks.length; i++) {
-		this.selectedVisibleLinks[i].setSelected(false);
-	}
-
-	for (i = 0; i < this.selectedVisibleComments.length; i++) {
-		this.selectedVisibleComments[i].setSelected(false);
-	}
-
-	this.resetSelection();
-};
-
-FNKEditor.PatchViewer.prototype.resetSelection = function() {
-	this.selectedVisibleNodes = [];
-	this.selectedVisibleLinks = [];
-	this.selectedVisibleComments = [];
-};
-
-FNKEditor.PatchViewer.prototype.selectVisibleNode = function(__visibleNode, __allowToggle) {
-	if (!__visibleNode.getSelected()) {
-		this.selectedVisibleNodes.push(__visibleNode);
-		__visibleNode.setSelected(true);
-	} else {
-		if (__allowToggle) this.deselectVisibleNode(__visibleNode);
-	}
-};
-
-FNKEditor.PatchViewer.prototype.deselectVisibleNode = function(__visibleNode) {
-	if (__visibleNode.getSelected()) {
-		var i = this.selectedVisibleNodes.indexOf(__visibleNode);
-		if (i > -1) this.selectedVisibleNodes.splice(i, 1);
-		__visibleNode.setSelected(false);
-	}
-};
-
 /*
 // ================================================================================================================
 // EVENT functions ------------------------------------------------------------------------------------------------
@@ -1120,42 +938,11 @@ protected function processPatch(e:Event = null): void {
 }
 */
 
-FNKEditor.PatchViewer.prototype.onVisibleNodeShouldStartMoving = function(__visibleNode) {
-	//if (isMovingFreely) {
-	//	hideCurrentTooltip();
-		var canStartMoving = true;
-	//	if (selectedVisibleNodes.indexOf(__visibleNode) > -1) {
-	//		// Already selected
-	//		if (KeyboardUtils.isShiftDown()) {
-	//			deselectVisibleNode(e.visibleNode);
-	//			canStartMoving = false;
-	//		}
-	//	} else {
-	//		// Not selected
-	//		if (!KeyboardUtils.isAdditionalSelectionModifierDown()) selectNone();
-			this.selectNone();
-			this.bringNodeToFront(__visibleNode);
-			this.selectVisibleNode(__visibleNode);
-	//	}
-		if (canStartMoving) this.startMovingSelection(__visibleNode.getLastMouseEvent());
-	//}
-};
-
-/*
-protected function onVisibleNodeMove(e:VisibleNodeEvent): void {
-	// A node has been moved. Update the related links
-	for (var i:Number = 0; i < visibleLinks.length; i++) {
-		if (visibleLinks[i].link.inputNode == e.visibleNode.node || visibleLinks[i].link.outputNode == e.visibleNode.node) {
-			redrawVisibleLink(visibleLinks[i]);
-			//visibleLinks[i].redraw();
-		}
-		// TODO: update link internal positions based on the position of the new node 
-	}
-}
 
 // ================================================================================================================
 // ACCESSOR functions ---------------------------------------------------------------------------------------------
 
+/*
 public function get scrollX(): Number {
 	return _scrollX;
 }
