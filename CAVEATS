@@ -1,0 +1,3 @@
+* "pointer-events" CSS property is used by nodes to prevent text (NodeRendererItem) from receiving events.
+   --> http://caniuse.com/#feat=pointer-events
+   --> Affected browsers: IE (all), Opera (all)
