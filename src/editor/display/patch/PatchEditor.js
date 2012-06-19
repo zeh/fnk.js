@@ -11,6 +11,9 @@ FNKEditor.PatchEditor = function() {
 	this.resetSelection(); // Same as above...
 	this.lastMousePosition = null;
 	this.isMovingSelection = false;
+	this.isResizingSelection = false;
+
+	this.selectAdditions = false; // If true, new additions are always selected // TODO: not used yet
 };
 
 FNKEditor.PatchEditor.prototype = new FNKEditor.PatchViewer();
@@ -198,6 +201,45 @@ FNKEditor.PatchEditor.prototype.moveSelection = function(__offsetX, __offsetY) {
 	*/
 };
 
+FNKEditor.PatchEditor.prototype.startResizingSelection = function(__event) {
+// TODO: support touch events
+
+	document.onmousemove = this.onContinueResizingSelection;
+	document.onmouseup = this.onStopResizingSelection;
+	document.fnkTargetPatch = this;
+
+	this.lastMousePosition = null;
+	this.isResizingSelection = true;
+	this.onContinueResizingSelection(__event);
+};
+
+FNKEditor.PatchEditor.prototype.continueResizingSelection = function(__mouseX, __mouseY) {
+	if (this.lastMousePosition != null) {
+		this.resizeSelection(__mouseX - this.lastMousePosition.x, __mouseY - this.lastMousePosition.y);
+	}
+
+	this.lastMousePosition = {x:__mouseX, y:__mouseY};
+};
+
+FNKEditor.PatchEditor.prototype.stopResizingSelection = function(__event) {
+	this.lastMousePosition = null;
+	this.isResizingSelection = false;
+	document.fnkTargetPatch = null;
+
+	document.onmousemove = null;
+	document.onmouseup = null;
+};
+
+FNKEditor.PatchEditor.prototype.onContinueResizingSelection = function(__event) {
+	document.fnkTargetPatch.continueResizingSelection.apply(document.fnkTargetPatch, [__event.clientX, __event.clientY]);
+	if (__event != undefined) __event.preventDefault();
+};
+
+FNKEditor.PatchEditor.prototype.onStopResizingSelection = function(__event) {
+	document.fnkTargetPatch.onContinueResizingSelection(__event);
+	document.fnkTargetPatch.stopResizingSelection.apply(document.fnkTargetPatch);
+};
+
 FNKEditor.PatchEditor.prototype.resizeSelection = function(__offsetX, __offsetY) {
 	// Resizes all currently selected items by a given amount of pixels
 
@@ -210,6 +252,7 @@ FNKEditor.PatchEditor.prototype.resizeSelection = function(__offsetX, __offsetY)
 	}
 
 	// TODO: resize links too!
+	// TODO: resize comments too!
 
 	//updateScrollBoundaries();
 	//dispatchChangeEvent();
@@ -241,6 +284,24 @@ FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartMoving = function(__visi
 };
 
 FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartResizing = function(__visibleNode) {
+	//if (isMovingFreely) {
+	//	hideCurrentTooltip();
+		var canStartResizing = true;
+	//	if (selectedVisibleNodes.indexOf(e.visibleNode) > -1) {
+	//		// Already selected
+	//		if (KeyboardUtils.isShiftDown()) {
+	//			deselectVisibleNode(e.visibleNode);
+	//			canStartResizing = false;
+	//		}
+	//	} else {
+	//		// Not selected
+	//		if (!KeyboardUtils.isShiftDown()) selectNone();
+			this.selectNone();
+			this.bringNodeToFront(__visibleNode);
+			this.selectVisibleNode(__visibleNode);
+	//	}
+		if (canStartResizing) this.startResizingSelection(__visibleNode.getLastMouseEvent());
+	//}
 };
 
 
@@ -330,14 +391,6 @@ package org.ffnnkk.display.patches {
 		protected var drawingVisibleLinkFirstPointDone:Boolean; // little hack
 		protected var fullScreenNode:VisibleGraphicNode;
 
-		// ================================================================================================================
-		// CONSTRUCTOR ----------------------------------------------------------------------------------------------------
-
-		public function PatchEditor() {
-			super();
-			selectAdditions = false;
-			resetSelection();
-		}
 		
 		// ================================================================================================================
 		// INSTANCE functions that override -------------------------------------------------------------------------------
@@ -1229,41 +1282,6 @@ package org.ffnnkk.display.patches {
 			}
 		}
 
-		protected function onNodeMouseDownMove(e:VisibleNodeEvent): void {
-			//Logger.getInstance().addMessage("VisibleNode pressed for move: " + e.visibleNode, LogMessage.TYPE_INFORMATION, this);
-			if (isMovingFreely) {
-				hideCurrentTooltip();
-				var canStartMoving:Boolean = true;
-				if (selectedVisibleNodes.indexOf(e.visibleNode) > -1) {
-					// Already selected
-					if (KeyboardUtils.isShiftDown()) {
-						deselectVisibleNode(e.visibleNode);
-						canStartMoving = false;
-					}
-				} else {
-					// Not selected
-					if (!KeyboardUtils.isAdditionalSelectionModifierDown()) selectNone();
-					bringNodeToFront(e.visibleNode);
-					selectVisibleNode(e.visibleNode);
-				}
-				if (canStartMoving) startMovingSelection();
-			}
-		}
-
-		protected function onNodeMouseOverMove(e:VisibleNodeEvent): void {
-			if (!isResizingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink) {
-				MouseUtils.setSpecialCursor(MouseUtils.CURSOR_MOVE);
-				isMovingSelectionMouse = true;
-			}
-		}
-
-		protected function onNodeMouseOutMove(e:VisibleNodeEvent): void {
-			if (!isResizingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink) {
-				if (!isMovingSelection) MouseUtils.removeSpecialCursor();
-				isMovingSelectionMouse = false;
-			}
-		}
-
 		protected function onCommentMouseDownMove(e:VisibleCommentEvent): void {
 			if (isMovingFreely) {
 				hideCurrentTooltip();
@@ -1295,42 +1313,6 @@ package org.ffnnkk.display.patches {
 			if (!isResizingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink) {
 				if (!isMovingSelection) MouseUtils.removeSpecialCursor();
 				isMovingSelectionMouse = false;
-			}
-		}
-
-		protected function onNodeMouseDownResize(e:VisibleNodeEvent): void {
-			//Logger.getInstance().addMessage("VisibleNode pressed for unhandled resize: " + e.visibleNode, LogMessage.TYPE_WARNING, this);
-			if (isMovingFreely) {
-				hideCurrentTooltip();
-				var canStartResizing:Boolean = true;
-				if (selectedVisibleNodes.indexOf(e.visibleNode) > -1) {
-					// Already selected
-					if (KeyboardUtils.isShiftDown()) {
-						deselectVisibleNode(e.visibleNode);
-						canStartResizing = false;
-					}
-				} else {
-					// Not selected
-					// TODO: maybe this will need verification of system here to decide on which key to do multiple selections
-					if (!KeyboardUtils.isShiftDown()) selectNone();
-					bringNodeToFront(e.visibleNode);
-					selectVisibleNode(e.visibleNode);
-				}
-				if (canStartResizing) startResizingSelection();
-			}
-		}
-
-		protected function onNodeMouseOverResize(e:VisibleNodeEvent): void {
-			if (!isMovingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink) {
-				MouseUtils.setSpecialCursor(MouseUtils.CURSOR_RESIZE_NWSE);
-				isResizingSelectionMouse = true;
-			}
-		}
-
-		protected function onNodeMouseOutResize(e:VisibleNodeEvent): void {
-			if (!isMovingSelection && !isDraggingCanvasMouse && !isSelectingArea && _isFocused && !isDrawingLink) {
-				if (!isResizingSelection) MouseUtils.removeSpecialCursor();
-				isResizingSelectionMouse = false;
 			}
 		}
 
