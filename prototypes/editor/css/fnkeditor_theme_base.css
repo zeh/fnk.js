@@ -8,6 +8,19 @@
 	position: relative;
 }
 
+.fnk-viewer-background {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	/* Unselectable */
+	/* Doesn't work on MSIE 9, Opera 11.6 */
+	-ms-user-select: none; /* Starting in MSIE 10 */
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+}
+
 .fnk-node {
 	border: 2px solid #a4a4a4;
 	display: block;

@@ -28,6 +28,7 @@ FNKEditor.PatchViewer = function() {
 	protected var maxScrollY:Number;
 	*/
 
+	this.backgroundContainer = null;
 	this.linkContainer = null;
 	this.nodeContainer = null;
 	this.commentContainer = null;
@@ -92,6 +93,10 @@ FNKEditor.PatchViewer.prototype.createElement = function () {
 	this.element.className = "fnk-viewer";
 
 	if (document.body != null) document.body.appendChild(this.element);
+
+	this.backgroundContainer = document.createElement("div");
+	this.backgroundContainer.className = "fnk-viewer-background";
+	this.element.appendChild(this.backgroundContainer);
 
 	this.commentContainer = document.createElement("div");
 	this.element.appendChild(this.commentContainer);
