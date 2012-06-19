@@ -20,8 +20,6 @@
 	background: #ffffff;
 	color: #000000;
 
-	cursor: move;
-	
 	/* Drop shadow */
 	box-shadow: 0 0 5px #d0d0d0;
 
@@ -32,6 +30,10 @@
 	-moz-user-select: -moz-none;
 	-webkit-user-select: none;
 	user-select: none;
+}
+
+.fnk-node-movable {
+	cursor: move;
 }
 
 .fnk-node-unselected {
@@ -56,6 +58,8 @@
 	-webkit-filter: invert(1); /* use brightness instead? */
 	border-top-left-radius: 1px;
 	border-bottom-left-radius: 1px;
+
+	cursor: move;
 }
 
 .fnk-node-bar-resize {
@@ -78,10 +82,25 @@
 	position: absolute;
 	top: 0px;
 	bottom: 0px;
-	left: 11px;
-	right: 11px;
 	top: 1px;
 	bottom: 1px;
+
+	border-radius: 1px;
+
+	left: 1px;
+	right: 1px;
+}
+
+.fnk-node-content-movable {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	left: 11px;
+}
+
+.fnk-node-content-resizable {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	right: 11px;
 }
 
 .fnk-link {

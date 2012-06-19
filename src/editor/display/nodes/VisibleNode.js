@@ -47,9 +47,10 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.x = 0;
 	this.y = 0;
 	
-	this.resizable = true;
+	this.resizable = true; // TODO: use this!
 	this.hasMoveHandle = true;
 	this.hasResizeHandle = true;
+	this.entireNodeMoves = false; // TODO: make this work with the resize handle
 	
 	this.width = this.DEFAULT_WIDTH;
 	this.height = this.DEFAULT_HEIGHT;
@@ -57,7 +58,6 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.isSelected = false;
 
 	this.node = __node;
-	//setBackground("node_background");
 	
 	this.hasText = true;
 
@@ -127,6 +127,25 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 
 	moveBar.targetVisualNode = this;
 	moveBar.onmousedown = this.onMouseDownStartMoving;
+
+	if (!this.hasMoveHandle) {
+		moveBar.style.visibility = "hidden";
+	} else {
+		FNK.addClassToElement(contentBox, "fnk-node-content-movable");
+	}
+
+	if (!this.hasResizeHandle) {
+		resizeBar.style.visibility = "hidden";
+	} else {
+		FNK.addClassToElement(contentBox, "fnk-node-content-resizable");
+	}
+
+	if (this.entireNodeMoves) {
+		FNK.addClassToElement(this.element, "fnk-node-movable");
+		this.element.targetVisualNode = this;
+		this.element.onmousedown = this.onMouseDownStartMoving;
+	}
+
 };
 
 FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
