@@ -3,6 +3,8 @@
 
 FNK.IONode = function() {
 	FNK.Node.call(this);
+
+	this.containedValue = undefined;
 };
 
 FNK.IONode.prototype = new FNK.Node();
@@ -32,8 +34,8 @@ FNK.IONode.prototype.populateConnectors = function() {
 
 FNK.IONode.prototype.innerProcess = function() {
 	// Process the node, using the input and creating the output
-	// TODO: setting the rendering caption like this is wrong
-	this.renderingCaption = this.inputConnectors.getConnector(FNK.Node.CONNECTOR_ID_INPUT).getValue();
+	// TODO: setting the value like this is wrong
+	this.containedValue = this.inputConnectors.getConnector(FNK.Node.CONNECTOR_ID_INPUT).getValue();
 	this.outputConnectors.getConnector(FNK.Node.CONNECTOR_ID_OUTPUT).setValue(this.inputConnectors.getConnector(FNK.Node.CONNECTOR_ID_INPUT).getValue(), this.dataType);
 };
 
@@ -68,3 +70,11 @@ public function getAdditionalParameters():Array {
 	return [];
 }
 */
+
+// ================================================================================================================
+// GENERIC interface ----------------------------------------------------------------------------------------------
+
+FNK.IONode.prototype.getContentDescription = function() {
+	// Returns a description of the content it holds
+	return this.containedValue;
+};

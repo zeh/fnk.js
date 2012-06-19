@@ -99,7 +99,6 @@ FNK.Node.prototype.getNumOutputConnectors = function() {
 FNK.Node.prototype.dispose = function() {
 	//dispatchEvent(new NodeEvent(NodeEvent.DISPOSE, this));
 	this.patch = undefined;
-	this.renderingClass = undefined;
 	this.inputConnectors = undefined;
 	this.outputConnectors = undefined;
 };
@@ -137,8 +136,9 @@ FNK.Node.prototype.toString = function() {
 
 FNK.Node.prototype.getContentDescription = function() {
 	// Returns a description of the content it holds
-	return "Null";
+	return this.description;
 };
+
 
 /*
 public function get hasHelpPatch(): Boolean {
