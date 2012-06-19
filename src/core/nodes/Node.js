@@ -22,7 +22,7 @@ FNK.Node.CONNECTOR_ID_OUTPUT = "output";
 FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
 
 // Static properties
-FNK.Node.prototype.description = "null";
+FNK.Node.prototype.description = "null"; // A description of the node. Same as the name of the node. Example: "+", "IO"
 FNK.Node.prototype.categoryType = FNK.CategoryType.OTHER;
 //		protected var HelpXML:Class;
 
@@ -133,6 +133,11 @@ FNK.Node.prototype.resetChangeFlags = function() {
 FNK.Node.prototype.toString = function() {
 	//return "[" + getQualifiedClassName(this) + "]";
 	return "[" + this.description + " (" + this.categoryType + ")]";
+};
+
+FNK.Node.prototype.getContentDescription = function() {
+	// Returns a description of the content it holds
+	return "Null";
 };
 
 /*

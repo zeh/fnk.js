@@ -48,3 +48,12 @@ FNK.OperationNode.prototype.innerProcess = function() {
 FNK.OperationNode.prototype.processedInputs = function(__position) {
 	return __position;
 };
+
+
+// ================================================================================================================
+// GENERIC interface ----------------------------------------------------------------------------------------------
+
+FNK.Node.prototype.getContentDescription = function() {
+	// Returns a description of the content it holds
+	return this.description;
+};
