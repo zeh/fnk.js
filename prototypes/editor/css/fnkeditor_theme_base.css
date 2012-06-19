@@ -89,6 +89,11 @@
 
 	left: 1px;
 	right: 1px;
+	overflow: hidden;
+
+	font-family: sans-serif;
+	font-size: 12px;
+	color: #222;
 }
 
 .fnk-node-content-movable {
@@ -101,6 +106,10 @@
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 	right: 11px;
+}
+
+.fnk-node-content-text {
+
 }
 
 .fnk-link {

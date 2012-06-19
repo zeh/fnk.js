@@ -62,6 +62,7 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.hasText = true;
 
 	this.element = undefined;
+	this.contentElement = undefined;
 	this.lastMouseEvent = null;
 
 	// Create stuff
@@ -75,6 +76,8 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	// Signals for events
 	this.startMovingSignal = new SimpleSignal();
 	this.startResizingSignal = new SimpleSignal();
+
+	this.renderer = undefined; // NodeRendererItem*
 	
 	/*
 	inputConnectorsLinked = new Vector.<Boolean>(node.numInputConnectors);
@@ -122,9 +125,9 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	resizeBar.className = "fnk-node-bar-resize";
 	this.element.appendChild(resizeBar);
 
-	var contentBox = document.createElement("div");
-	contentBox.className = "fnk-node-content";
-	this.element.appendChild(contentBox);
+	this.contentElement = document.createElement("div");
+	this.contentElement.className = "fnk-node-content";
+	this.element.appendChild(this.contentElement);
 
 	moveBar.targetVisualNode = this;
 	moveBar.onmousedown = this.onMouseDownStartMoving;
@@ -135,13 +138,13 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	if (!this.hasMoveHandle) {
 		moveBar.style.visibility = "hidden";
 	} else {
-		FNK.addClassToElement(contentBox, "fnk-node-content-movable");
+		FNK.addClassToElement(this.contentElement, "fnk-node-content-movable");
 	}
 
 	if (!this.hasResizeHandle) {
 		resizeBar.style.visibility = "hidden";
 	} else {
-		FNK.addClassToElement(contentBox, "fnk-node-content-resizable");
+		FNK.addClassToElement(this.contentElement, "fnk-node-content-resizable");
 	}
 
 	if (this.entireNodeMoves) {
@@ -149,6 +152,9 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 		this.element.targetVisualNode = this;
 		this.element.onmousedown = this.onMouseDownStartMoving;
 	}
+
+	this.renderer = new FNKEditor.NodeRendererItemText(this);
+	this.renderer.setContent("NodeValue", FNK.DataType.STRING);
 
 };
 
@@ -686,6 +692,10 @@ public function setConnectorStateHighlighted(__value:Boolean, __id:String, __isO
 
 FNKEditor.VisibleNode.prototype.getElement = function() {
 	return this.element;
+};
+
+FNKEditor.VisibleNode.prototype.getContentElement = function() {
+	return this.contentElement;
 };
 
 FNKEditor.VisibleNode.prototype.getLastMouseEvent = function() {
