@@ -1,0 +1,45 @@
+=======
+OVERALL
+-------
+
+
+CORE
+----
+
+* Implement change booleans, caches, signals?
+* Nodes
+  * Everything
+  * Web Socket
+  * IFrames
+  * Video
+
+
+EDITOR
+------
+
+* Draw links
+* Allow proper selection of several elements
+* When clicking on canvas, must select none
+
+* File Format
+  * Decide on new file schema
+  * Add Meta-data for links and nodes (for size, position)
+  * Add save and load
+
+* Help XMLs
+
+* Visual Nodes
+  * Draw values
+  * How to decide how to draw the values?
+
+
+========
+DETAILED
+--------
+
+
+EDITOR
+------
+ 
+* Visual Nodes
+  * Cannot allow resizing to any size. Must clamp to minimum sizes
