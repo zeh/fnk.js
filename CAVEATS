@@ -1,3 +1,10 @@
-* "pointer-events" CSS property is used by nodes to prevent text (NodeRendererItem) from receiving events.
+"pointer-events" CSS property is used by nodes to prevent text (NodeRendererItem) from receiving events.
    --> http://caniuse.com/#feat=pointer-events
+   --> Part of CSS4 proposal... not officially supported?
    --> Affected browsers: IE (all), Opera (all)
+
+
+"user-select" CSS property is used by nodes and the viewer background to prevent stuff from being selected.
+   --> https://developer.mozilla.org/en/CSS/user-select
+   --> Not officially part of any specification?
+   --> Affected browsers: IE (9-), Opera (all)
