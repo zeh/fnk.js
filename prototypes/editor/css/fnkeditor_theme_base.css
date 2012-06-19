@@ -94,6 +94,8 @@
 	font-family: sans-serif;
 	font-size: 12px;
 	color: #222;
+
+	pointer-events: none;
 }
 
 .fnk-node-content-movable {
