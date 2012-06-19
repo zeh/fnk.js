@@ -95,12 +95,11 @@ FNKEditor.VisibleNode.prototype.constructor = FNK.VisibleNode;
 // STATIC properties ----------------------------------------------------------------------------------------------
 
 // Constants
-/*
 FNKEditor.VisibleNode.MINIMUM_WIDTH = 30;
-FNKEditor.VisibleNode.MAXIMUM_WIDTH = 1000;
+FNKEditor.VisibleNode.MAXIMUM_WIDTH = 2000;
 FNKEditor.VisibleNode.MINIMUM_HEIGHT = 15;
-FNKEditor.VisibleNode.MAXIMUM_HEIGHT = 1001;
-*/
+FNKEditor.VisibleNode.MAXIMUM_HEIGHT = 2000;
+
 FNKEditor.VisibleNode.CLASS_SELECTED = "fnk-node-selected";
 FNKEditor.VisibleNode.CLASS_UNSELECTED = "fnk-node-unselected";
 FNKEditor.VisibleNode.DEFAULT_WIDTH = 80;
@@ -635,8 +634,8 @@ FNKEditor.VisibleNode.prototype.setPosition = function(__x, __y) {
 };
 
 FNKEditor.VisibleNode.prototype.setSize = function(__width, __height) {
-	this.width = __width; // TODO: clamp the values to max/min?
-	this.height = __height; // TODO: clamp the values to max/min?
+	this.width = FNK.MathUtils.clamp(__width, FNKEditor.VisibleNode.MINIMUM_WIDTH, FNKEditor.VisibleNode.MAXIMUM_WIDTH); // TODO: clamp the values to max/min?
+	this.height = FNK.MathUtils.clamp(__height, FNKEditor.VisibleNode.MINIMUM_HEIGHT, FNKEditor.VisibleNode.MAXIMUM_HEIGHT); // TODO: clamp the values to max/min?
 
 	this.updateElementSize();
 
