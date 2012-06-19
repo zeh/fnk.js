@@ -14,6 +14,9 @@ FNKEditor.PatchEditor = function() {
 	this.isResizingSelection = false;
 
 	this.selectAdditions = false; // If true, new additions are always selected // TODO: not used yet
+
+	this.backgroundContainer.targetPatch = this;
+	this.backgroundContainer.addEventListener('click', this.onClickCanvas, false);
 };
 
 FNKEditor.PatchEditor.prototype = new FNKEditor.PatchViewer();
@@ -300,6 +303,10 @@ FNKEditor.PatchEditor.prototype.onVisibleNodeShouldStartResizing = function(__vi
 		}
 		if (canStartResizing) this.startResizingSelection(__visibleNode.getLastMouseEvent());
 	//}
+};
+
+FNKEditor.PatchEditor.prototype.onClickCanvas = function(__event) {
+	this.targetPatch.selectNone();
 };
 
 /*
