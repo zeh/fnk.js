@@ -20,9 +20,9 @@ EDITOR
 
 * Draw links
 * Allow proper selection of several elements
-* When clicking on canvas, must select none
 * Get rid of the old example
 * Re-add touch screen move events
+* Allow a selection window when clicking and dragging on PatchEditor background
 
 * File Format
   * Decide on new file schema
@@ -34,7 +34,7 @@ EDITOR
 * Visual Nodes
   * Draw values
   * How to decide how to draw the values?
-  * When resizing, force the cursor to always be correct even when the cursor is not on top of the correct handle?
+  * When resizing, force the cursor to always be correct even when the cursor is not on top of the correct handle? (need to set the cursor of the background to match the current handle cursor)
   * When resizing, if resized to minimum height, then resized up, it resizes as relative values instead of absolute values.. looks weird
 
 * Add process() call
