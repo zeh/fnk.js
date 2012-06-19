@@ -20,6 +20,7 @@ EDITOR
 * Draw links
 * Allow proper selection of several elements
 * When clicking on canvas, must select none
+* Get rid of the old example
 
 * File Format
   * Decide on new file schema
@@ -32,11 +33,18 @@ EDITOR
   * Draw values
   * How to decide how to draw the values?
 
+* Add process() call
+
 
 ========
 DETAILED
 --------
 
+
+KEYBOARDSTATE
+-------------
+
+* Test on other browsers (MSIE?) to make sure it's working
 
 EDITOR
 ------
