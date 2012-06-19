@@ -139,7 +139,6 @@ FNK.Node.prototype.getContentDescription = function() {
 	return this.description;
 };
 
-
 /*
 public function get hasHelpPatch(): Boolean {
 	return Boolean(HelpXML);
