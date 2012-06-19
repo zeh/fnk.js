@@ -154,7 +154,7 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	}
 
 	this.renderer = new FNKEditor.NodeRendererItemText(this);
-	this.renderer.setContent("NodeValue", FNK.DataType.STRING);
+	this.renderer.setContent(this.node.getContentDescription(), FNK.DataType.STRING);
 
 };
 
