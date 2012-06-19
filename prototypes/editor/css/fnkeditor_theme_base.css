@@ -26,7 +26,6 @@
 	/* Unselectable */
 	/* Doesn't work on MSIE 9, Opera 11.6 */
 	-ms-user-select: none; /* Starting in MSIE 10 */
-	-khtml-user-select: none;
 	-moz-user-select: -moz-none;
 	-webkit-user-select: none;
 	user-select: none;
