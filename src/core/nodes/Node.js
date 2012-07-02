@@ -7,6 +7,7 @@ FNK.Node = function() {
 	this.populateParameters();
 	this.createConnectors();
 	this.populateConnectors();
+	this.createSignals();
 };
 
 FNK.Node.prototype = {};
@@ -60,10 +61,22 @@ FNK.Node.prototype.populateParameters = function() {
 	// Actually populate the parameter list with the expected parameters
 };
 
+FNK.Node.prototype.createSignals = function() {
+	// Create signals for event-like dispatching
+	this.changeContentDescriptionSignal = new SimpleSignal();
+	this.changeAnyOutputSignal = new SimpleSignal();
+};
+
+FNK.Node.prototype.destroySignals = function() {
+	// Create signals for event-like dispatching
+	this.changeContentDescriptionSignal = undefined;
+	this.changeAnyOutputSignal = undefined;
+};
 
 FNK.Node.prototype.setDescription = function(__description) {
 	// Set the description (must be an array)
 	this.description = __description;
+	this.changeContentDescriptionSignal.dispatch();
 };
 
 
@@ -107,6 +120,7 @@ FNK.Node.prototype.dispose = function() {
 	this.patch = undefined;
 	this.inputConnectors = undefined;
 	this.outputConnectors = undefined;
+	this.destroySignals();
 };
 
 
@@ -118,6 +132,7 @@ FNK.Node.prototype.process = function() {
 		// Actual processing
 		this.innerProcess();
 		this.resetChangeFlags();
+		this.changeAnyOutputSignal.dispatch();
 	}
 };
 
