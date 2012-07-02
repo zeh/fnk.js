@@ -13,6 +13,7 @@ CORE
   * Web Socket
   * IFrames
   * Video
+  * NodeRendererItemText: need to interpret multiple text item nodes properly
 
 
 EDITOR
