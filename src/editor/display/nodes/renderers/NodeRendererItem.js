@@ -6,7 +6,7 @@ FNKEditor.NodeRendererItem = function(__visualNode) {
 	this.height = 0;
 
 	this.dataType = undefined;
-	this.currentContent = undefined;
+	this.currentContent = [];
 
 	this.visualNode = __visualNode;
 };
@@ -19,8 +19,10 @@ FNKEditor.NodeRendererItem.prototype.constructor = FNK.NodeRendererItem;
 // INTERNAL interface ---------------------------------------------------------------------------------------------
 
 FNKEditor.NodeRendererItem.prototype.setContent = function (__content, __fromType) {
-	var newContent = FNK.DataType.convertData(__content, __fromType, this.dataType);
-	if (newContent != this.currentContent) this.currentContent = newContent;
+	//FNK.log("NodeRendererItem :: setContent :: " + __content + " (x"+__content.length+") as "+__fromType);
+	var newContent = FNK.DataType.convertDataArray(__content, __fromType, this.dataType);
+	this.currentContent = newContent;
+	//if (newContent != this.currentContent) this.currentContent = newContent;
 	this.updateContentValue();
 };
 

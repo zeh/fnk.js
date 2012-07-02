@@ -13,7 +13,7 @@ FNK.NumberAdd.prototype.constructor = FNK.NumberAdd;
 // STATIC properties ----------------------------------------------------------------------------------------------
 
 // Static properties
-FNK.NumberAdd.prototype.description = "+";
+FNK.NumberAdd.prototype.description = ["+"];
 FNK.NumberAdd.prototype.categoryType = FNK.CategoryType.NUMBER;
 
 

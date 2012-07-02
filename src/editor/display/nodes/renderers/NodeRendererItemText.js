@@ -21,7 +21,20 @@ FNKEditor.NodeRendererItemText.prototype.updateElementSize = function() {
 FNKEditor.NodeRendererItemText.prototype.updateContentValue = function() {
 	FNKEditor.NodeRendererItem.prototype.updateContentValue.call(this);
 
-	this.getContentElement().innerHTML = this.currentContent;
+	// TODO: this can be an array... must create more items?
+	if (this.currentContent == undefined) {
+		// No content at all
+		this.getContentElement().innerHTML = "[null]";
+	} else if (this.currentContent.length == 0) {
+		// No items
+		this.getContentElement().innerHTML = "[empty]";
+	} else if (this.currentContent.length > 1) {
+		// Several items
+		this.getContentElement().innerHTML = this.currentContent[0] + " (+)";
+	} else {
+		// One item
+		this.getContentElement().innerHTML = this.currentContent[0];
+	}
 };
 
 FNKEditor.NodeRendererItemText.prototype.dispose = function() {

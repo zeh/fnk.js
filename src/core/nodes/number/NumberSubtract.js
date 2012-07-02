@@ -13,7 +13,7 @@ FNK.NumberSubtract.prototype.constructor = FNK.NumberSubtract;
 // STATIC properties ----------------------------------------------------------------------------------------------
 
 // Static properties
-FNK.NumberSubtract.prototype.description = "-";
+FNK.NumberSubtract.prototype.description = ["-"];
 FNK.NumberSubtract.prototype.categoryType = FNK.CategoryType.NUMBER;
 
 

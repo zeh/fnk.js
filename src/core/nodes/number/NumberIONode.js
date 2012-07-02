@@ -13,7 +13,7 @@ FNK.NumberIONode.prototype.constructor = FNK.NumberIONode;
 // STATIC properties ----------------------------------------------------------------------------------------------
 
 // Static properties
-FNK.NumberIONode.prototype.description = "IO";
+FNK.NumberIONode.prototype.description = ["IO"];
 FNK.NumberIONode.prototype.categoryType = FNK.CategoryType.NUMBER;
 
 

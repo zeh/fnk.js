@@ -22,7 +22,7 @@ FNK.Node.CONNECTOR_ID_OUTPUT = "output";
 FNK.Node.CONNECTOR_ID_SEPARATOR = "-";
 
 // Static properties
-FNK.Node.prototype.description = "null"; // A description of the node. Same as the name of the node. Example: "+", "IO"
+FNK.Node.prototype.description = []; // A description of the node. Same as the name of the node. Example: "+", "IO"
 FNK.Node.prototype.categoryType = FNK.CategoryType.OTHER;
 //		protected var HelpXML:Class;
 
@@ -58,6 +58,12 @@ FNK.Node.prototype.createParameters = function() {
 
 FNK.Node.prototype.populateParameters = function() {
 	// Actually populate the parameter list with the expected parameters
+};
+
+
+FNK.Node.prototype.setDescription = function(__description) {
+	// Set the description (must be an array)
+	this.description = __description;
 };
 
 
@@ -135,7 +141,7 @@ FNK.Node.prototype.toString = function() {
 };
 
 FNK.Node.prototype.getContentDescription = function() {
-	// Returns a description of the content it holds
+	// Returns a description of the content it holds (used for the visual node) - normally, an array
 	return this.description;
 };
 
