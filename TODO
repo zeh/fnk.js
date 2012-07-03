@@ -14,6 +14,8 @@ CORE
   * IFrames
   * Video
   * NodeRendererItemText: need to interpret multiple text item nodes properly
+  * IO Nodes need to have a separate "input" for when the value is changed by the user
+  * VisualNodes shouldn't update their visuals immediately on node changes; mark as "dirty" instead and update later?
 
 
 EDITOR
