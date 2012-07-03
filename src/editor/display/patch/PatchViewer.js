@@ -99,12 +99,15 @@ FNKEditor.PatchViewer.prototype.createElement = function () {
 	this.element.appendChild(this.backgroundContainer);
 
 	this.commentContainer = document.createElement("div");
+	this.commentContainer.className = "fnk-layer-comments";
 	this.element.appendChild(this.commentContainer);
 
 	this.linkContainer = document.createElement("div");
+	this.linkContainer.className = "fnk-layer-links";
 	this.element.appendChild(this.linkContainer);
 
 	this.nodeContainer = document.createElement("div");
+	this.nodeContainer.className = "fnk-layer-nodes";
 	this.element.appendChild(this.nodeContainer);
 };
 

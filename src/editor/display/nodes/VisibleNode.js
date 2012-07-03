@@ -65,6 +65,9 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.contentElement = undefined;
 	this.lastMouseEvent = null;
 
+	this.inputConnectorElements = [];
+	this.outputConnectorElements = [];
+
 	this.renderer = undefined; // NodeRendererItem*
 
 	// Create stuff
@@ -112,6 +115,8 @@ FNKEditor.VisibleNode.DEFAULT_HEIGHT = 15;
 FNKEditor.VisibleNode.prototype.createElement = function () {
 	// Creates the element container
 
+	var i;
+
 	// Create document element
 	this.element = document.createElement("div");
 	this.element.className = "fnk-node";
@@ -155,6 +160,26 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	this.renderer = new FNKEditor.NodeRendererItemText(this);
 	this.updateRenderer();
 
+	// Create connectors
+	// TODO: make this dynamic?
+	var connectorElement;
+
+	// Input
+	for (i = 0; i < this.node.getNumInputConnectors(); i++) {
+		connectorElement = document.createElement("div");
+		connectorElement.className = "fnk-node-connector fnk-node-connector-input";
+		this.inputConnectorElements.push(connectorElement);
+		this.element.appendChild(connectorElement);
+	}
+
+	// Output
+	for (i = 0; i < this.node.getNumOutputConnectors(); i++) {
+		connectorElement = document.createElement("div");
+		connectorElement.className = "fnk-node-connector fnk-node-connector-output";
+		this.outputConnectorElements.push(connectorElement);
+		this.element.appendChild(connectorElement);
+	}
+
 	// Event hooks
 	this.node.changeContentDescriptionSignal.add(this.onNodeChangedDescription, this, []);
 };
@@ -162,11 +187,41 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
 	this.element.style.left = this.x + "px";
 	this.element.style.top = this.y + "px";
+
+	this.updateConnectorsPositions();
 };
 
 FNKEditor.VisibleNode.prototype.updateElementSize = function() {
 	this.element.style.width = this.width + "px";
 	this.element.style.height = this.height + "px";
+
+	this.updateConnectorsPositions();
+};
+
+FNKEditor.VisibleNode.prototype.updateConnectorsPositions = function() {
+	// Update all connector positions
+
+	var i;
+	var posX, posY;
+	var connectorElement;
+
+	// Input
+	for (i = 0; i < this.node.getNumInputConnectors(); i++) {
+		connectorElement = this.inputConnectorElements[i];
+		posX = 0;
+		posY = -connectorElement.offsetHeight;
+		connectorElement.style.left = posX + "px";
+		connectorElement.style.top = posY + "px";
+	}
+
+	// Output
+	for (i = 0; i < this.node.getNumOutputConnectors(); i++) {
+		connectorElement = this.outputConnectorElements[i];
+		posX = 0;
+		posY = this.height;
+		connectorElement.style.left = posX + "px";
+		connectorElement.style.top = posY + "px";
+	}
 };
 
 FNKEditor.VisibleNode.prototype.updateRenderer = function() {
