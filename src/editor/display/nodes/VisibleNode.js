@@ -65,6 +65,8 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.contentElement = undefined;
 	this.lastMouseEvent = null;
 
+	this.renderer = undefined; // NodeRendererItem*
+
 	// Create stuff
 	this.createElement();
 
@@ -77,8 +79,6 @@ protected var outputConnectorsHighlighted:Vector.<Boolean>;
 	this.startMovingSignal = new SimpleSignal();
 	this.startResizingSignal = new SimpleSignal();
 
-	this.renderer = undefined; // NodeRendererItem*
-	
 	/*
 	inputConnectorsLinked = new Vector.<Boolean>(node.numInputConnectors);
 	outputConnectorsLinked = new Vector.<Boolean>(node.numOutputConnectors);
@@ -153,8 +153,10 @@ FNKEditor.VisibleNode.prototype.createElement = function () {
 	}
 
 	this.renderer = new FNKEditor.NodeRendererItemText(this);
-	this.renderer.setContent(this.node.getContentDescription(), FNK.DataType.STRING);
+	this.updateRenderer();
 
+	// Event hooks
+	this.node.changeContentDescriptionSignal.add(this.onNodeChangedDescription, this, []);
 };
 
 FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
@@ -165,6 +167,11 @@ FNKEditor.VisibleNode.prototype.updateElementPosition = function() {
 FNKEditor.VisibleNode.prototype.updateElementSize = function() {
 	this.element.style.width = this.width + "px";
 	this.element.style.height = this.height + "px";
+};
+
+FNKEditor.VisibleNode.prototype.updateRenderer = function() {
+	// Updates the renderer with the correct node content
+	this.renderer.setContent(this.node.getContentDescription(), FNK.DataType.STRING);
 };
 
 FNKEditor.VisibleNode.prototype.updateElementSelection = function() {
@@ -539,6 +546,12 @@ FNKEditor.VisibleNode.prototype.onMouseDownStartResizing = function(__event) {
 
 	// Dispatch the related signal
 	this.targetVisualNode.startResizingSignal.dispatch();
+};
+
+FNKEditor.VisibleNode.prototype.onNodeChangedDescription = function() {
+	// The description of the node has changed, so update this!
+
+	this.updateRenderer();
 };
 
 /*
