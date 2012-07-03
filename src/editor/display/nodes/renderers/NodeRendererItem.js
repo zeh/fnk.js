@@ -80,3 +80,8 @@ public function get dataType():String {
 }
 
 */
+
+FNKEditor.NodeRendererItem.prototype.toString = function() {
+	//return "[" + getQualifiedClassName(this) + "]";
+	return "[NodeRendererItem ("+this.currentContent+")]";
+};

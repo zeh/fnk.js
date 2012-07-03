@@ -748,3 +748,8 @@ FNKEditor.VisibleNode.prototype.setSelected = function(__isSelected) {
 	this.isSelected = __isSelected;
 	this.updateElementSelection();
 };
+
+FNKEditor.VisibleNode.prototype.toString = function() {
+	//return "[" + getQualifiedClassName(this) + "]";
+	return "[VisualNode (" + this.node.toString()+")]";
+};
