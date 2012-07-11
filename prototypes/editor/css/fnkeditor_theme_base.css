@@ -127,23 +127,33 @@
 .fnk-node-connector {
 	position: absolute;
 	width: 4px;
-	height: 4px;
+	height: 2px;
 
 	border: 2px solid #a4a4a4;
-	border: 0px solid #ff0000;
 	border-radius: 2px;
 	background: #cccccc;
 	color: #000000;
+
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-bottom: 2px; /* same as fnk-node's border */
+	margin-top: 2px; /* same as fnk-node's border */
 }
 
 .fnk-node-connector-input {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+	border-bottom: 0;
 }
 
 .fnk-node-connector-output {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
+	border-top: 0;
+}
+
+.fnk-node-connector-connected {
+	background: #a4a4a4;
 }
 
 .fnk-link {
