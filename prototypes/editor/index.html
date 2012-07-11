@@ -148,11 +148,15 @@
 			var node1 = document.getElementById("node1");
 			var node2 = document.getElementById("node2");
 
-			var x1 = node1.offsetLeft + 4;
-			var y1 = node1.offsetTop + node1.clientTop + node1.clientHeight;
+			var container = document.getElementById("test-container");
+			var ccx = container.offsetLeft;
+			var ccy = container.offsetTop;
 
-			var x2 = node2.offsetLeft + 4;
-			var y2 = node2.offsetTop + node2.clientTop;
+			var x1 = node1.offsetLeft + 4 + ccx;
+			var y1 = node1.offsetTop + node1.clientTop + node1.clientHeight + ccy;
+
+			var x2 = node2.offsetLeft + 4 + ccx;
+			var y2 = node2.offsetTop + node2.clientTop + ccy;
 			
 			var stroke = 2;
 			
@@ -224,6 +228,7 @@
 			// Creates actual viewer
 			viewer = new FNKEditor.PatchEditor();
 			viewer.setSize(400, 400);
+			document.getElementById("container").appendChild(viewer.getElement());
 
 			// Create node A
 			var nodeA = new FNK.NumberIONode();
@@ -261,6 +266,9 @@
 
 			viewer.addVisibleNode(nodeCVis);
 
+
+			// Delete later
+			updateLines();
 		}
 
 		function onDoubleClickEditor(event) {
@@ -275,8 +283,9 @@
 	</style>
 </head>
 <body onload="onLoaded();">
-
 <div id="container">
+</div>
+<div id="test-container">
 	<div id="fnk-viewer-temp" class="fnk-viewer" style="width: 500px; height: 500px">
 		<div class="fnk-node" id="node1" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>
 		<div class="fnk-node" id="node2" onmousedown="startElementDrag(event)" ontouchstart="startElementDragTouch(event)">+ (Number)</div>

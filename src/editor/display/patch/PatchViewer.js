@@ -950,6 +950,11 @@ protected function processPatch(e:Event = null): void {
 // ================================================================================================================
 // ACCESSOR functions ---------------------------------------------------------------------------------------------
 
+FNKEditor.PatchViewer.prototype.getElement = function() {
+	return this.element;
+};
+
+
 /*
 public function get scrollX(): Number {
 	return _scrollX;
