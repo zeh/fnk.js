@@ -204,20 +204,42 @@ FNKEditor.VisibleNode.prototype.updateConnectorsPositions = function() {
 	var i;
 	var posX, posY;
 	var connectorElement;
+	var connectorItemOffset;
+	var connectorStyle, connectorWidth, connectorMarginLeft, connectorMarginRight, numConnectors;
+
+	// TODO: this is not updating properly the first time something is changed
 
 	// Input
+	connectorItemOffset = 0;
+	if (this.node.getNumInputConnectors() > 0) {
+		connectorStyle = getComputedStyle(this.inputConnectorElements[0]);
+		connectorMarginLeft = parseFloat(connectorStyle.marginLeft);
+		connectorMarginRight = parseFloat(connectorStyle.marginRight);
+		connectorWidth = this.inputConnectorElements[0].offsetWidth + connectorMarginLeft + connectorMarginRight;
+		numConnectors = this.node.getNumInputConnectors();
+		connectorItemOffset = (this.width - connectorWidth * (numConnectors - 1)) / (numConnectors - 1);
+	}
 	for (i = 0; i < this.node.getNumInputConnectors(); i++) {
 		connectorElement = this.inputConnectorElements[i];
-		posX = 0;
-		posY = -connectorElement.offsetHeight;
+		posX = 0 + i * Math.round(connectorItemOffset);
+		posY = this.height;
 		connectorElement.style.left = posX + "px";
-		connectorElement.style.top = posY + "px";
+		connectorElement.style.bottom = posY + "px";
 	}
 
 	// Output
+	connectorItemOffset = 0;
+	if (this.node.getNumOutputConnectors() > 0) {
+		connectorStyle = getComputedStyle(this.outputConnectorElements[0]);
+		connectorMarginLeft = parseFloat(connectorStyle.marginLeft);
+		connectorMarginRight = parseFloat(connectorStyle.marginRight);
+		connectorWidth = this.outputConnectorElements[0].offsetWidth + connectorMarginLeft + connectorMarginRight;
+		numConnectors = this.node.getNumOutputConnectors();
+		connectorItemOffset = (this.width - connectorWidth * (numConnectors - 1)) / (numConnectors - 1);
+	}
 	for (i = 0; i < this.node.getNumOutputConnectors(); i++) {
 		connectorElement = this.outputConnectorElements[i];
-		posX = 0;
+		posX = 0 + i * Math.round(connectorItemOffset);
 		posY = this.height;
 		connectorElement.style.left = posX + "px";
 		connectorElement.style.top = posY + "px";
